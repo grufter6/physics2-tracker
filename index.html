@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AP Physics 2 Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0}
+/* Layout: a lab-notebook column on faint graph paper; summary up top, one block per unit in study order */
+:root{
+  --bg:#f5f7fa; --grid:#e3e8f0; --surface:#ffffff; --fg:#17202e; --muted:#5d6878; --line:#d5dce6;
+  --accent:#2a54d6; --accent-soft:#e3eafc; --good:#1f8a5a; --good-soft:#ddf2e8; --warn:#b5650f; --warn-soft:#fbecd9;
+  --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --grid:#1a2029; --surface:#171d26; --fg:#e6ebf2; --muted:#98a3b3; --line:#2a3340;
+  --accent:#7d9bff; --accent-soft:#1f2a4a; --good:#4cc68d; --good-soft:#14321f; --warn:#f0a24b; --warn-soft:#3a2810; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --grid:#1a2029; --surface:#171d26; --fg:#e6ebf2; --muted:#98a3b3; --line:#2a3340;
+  --accent:#7d9bff; --accent-soft:#1f2a4a; --good:#4cc68d; --good-soft:#14321f; --warn:#f0a24b; --warn-soft:#3a2810; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+.wrap{max-width:760px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+header h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+header p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stat{min-width:0}
+.stat .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:var(--display);font-weight:700;font-size:24px;font-variant-numeric:tabular-nums}
+.stat .s{font-size:13px;color:var(--muted)}
+.bar{grid-column:1/-1;height:8px;border-radius:4px;background:var(--accent-soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.save{grid-column:1/-1;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.unit{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.unit.now{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.uhead{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;cursor:pointer;user-select:none;background:none;border:0;width:100%;text-align:left;color:inherit;font:inherit}
+.uhead:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.num{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:3px;min-width:2.2em}
+.ut{flex:1;min-width:0}
+.ut h2{font-family:var(--display);font-weight:700;font-size:17px;margin:0;line-height:1.25}
+.ut .d{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px}
+.mini{height:4px;border-radius:2px;background:var(--line);margin-top:8px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--accent);width:0}
+.chip{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:99px;white-space:nowrap;background:var(--line);color:var(--muted)}
+.chip.now{background:var(--accent-soft);color:var(--accent)}
+.chip.done{background:var(--good-soft);color:var(--good)}
+.chip.behind{background:var(--warn-soft);color:var(--warn)}
+.tasks{list-style:none;margin:0;padding:0 16px 14px 16px;display:flex;flex-direction:column;gap:2px}
+.unit.closed .tasks{display:none}
+.tasks label{display:flex;gap:10px;align-items:flex-start;padding:6px 4px;border-radius:6px;cursor:pointer}
+.tasks label:hover{background:var(--accent-soft)}
+.tasks input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+.tasks input:checked + span{color:var(--muted);text-decoration:line-through}
+.tasks a{color:var(--accent)}
+.res{font-size:13px;color:var(--muted)}
+.res a{color:var(--accent)}
+footer{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.summary{grid-template-columns:1fr 1fr}.stat.wide{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Self-study · Nov 2026 → May 2027 exam</div>
+    <h1>AP Physics 2 Tracker</h1>
+    <p>Seven units at about three weeks each, then April for full review. Tick tasks as you finish them; progress saves automatically.</p>
+  </header>
+
+  <section class="summary" aria-label="Progress summary">
+    <div class="stat"><div class="k">Done</div><div class="v" id="pct">0%</div><div class="s" id="count">0 of 0 tasks</div></div>
+    <div class="stat"><div class="k">Units finished</div><div class="v" id="units">0 / 8</div><div class="s">incl. review</div></div>
+    <div class="stat wide"><div class="k">This week</div><div class="v" id="nowName" style="font-size:18px;line-height:1.3">—</div><div class="s" id="nowSub"></div></div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="save" id="save">Loading saved progress…</div>
+  </section>
+
+  <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
+
+  <footer class="res">
+    Free books: <a href="https://openstax.org/details/books/college-physics-2e" target="_blank" rel="noopener">OpenStax College Physics 2e</a> (chapter numbers below) ·
+    <a href="https://openstax.org/details/books/university-physics-volume-2" target="_blank" rel="noopener">University Physics Vol. 2</a> for extra depth ·
+    Past free-response questions on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam/past-exam-questions" target="_blank" rel="noopener">AP Central</a>. Check College Board for the exact 2027 exam date.
+  </footer>
+</div>
+
+<script>
+const std = (ch)=>[
+  ["read",`Read OpenStax College Physics ${ch}`],
+  ["sheet","Write a one-page concept + equation sheet"],
+  ["probs","Do 20+ end-of-chapter problems and check answers"],
+  ["frq","Do 2 past AP FRQs on this unit, grade with the rubric"],
+  ["explain","Explain the big ideas out loud without notes"]
+];
+const UNITS=[
+  {id:"u9", n:"9",  t:"Thermodynamics", s:"2026-11-02", e:"2026-11-22", tasks:std("ch. 13–15")},
+  {id:"u10",n:"10", t:"Electric Force, Field, and Potential", s:"2026-11-23", e:"2026-12-13", tasks:std("ch. 18–19")},
+  {id:"u11",n:"11", t:"Electric Circuits", s:"2026-12-14", e:"2027-01-10", tasks:std("ch. 20–21")},
+  {id:"u12",n:"12", t:"Magnetism and Electromagnetism", s:"2027-01-11", e:"2027-01-31", tasks:std("ch. 22–23")},
+  {id:"u13",n:"13", t:"Geometric Optics", s:"2027-02-01", e:"2027-02-21", tasks:std("ch. 25")},
+  {id:"u14",n:"14", t:"Waves, Sound, and Physical Optics", s:"2027-02-22", e:"2027-03-14", tasks:std("ch. 16–17, 27")},
+  {id:"u15",n:"15", t:"Modern Physics", s:"2027-03-15", e:"2027-04-04", tasks:std("ch. 29–31")},
+  {id:"rev",n:"R",  t:"Review and Practice Exams", s:"2027-04-05", e:"2027-05-02", tasks:[
+    ["ex1","Full timed practice exam #1"],
+    ["miss","Redo every missed question; log the mistake type"],
+    ["weak","Re-study your two weakest units"],
+    ["frqset","Timed FRQ set: one per question type"],
+    ["ex2","Full timed practice exam #2"],
+    ["final","Final pass over all concept sheets"]
+  ]}
+];
+const ALL=UNITS.flatMap(u=>u.tasks.map(([k])=>u.id+"."+k));
+let done={}; let opened=null;
+const $=id=>document.getElementById(id);
+const fmt=d=>new Date(d+"T12:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
+const today=new Date(); today.setHours(12,0,0,0);
+const status=u=>{
+  const n=u.tasks.filter(([k])=>done[u.id+"."+k]).length, tot=u.tasks.length;
+  const s=new Date(u.s+"T00:00"), e=new Date(u.e+"T23:59");
+  if(n===tot) return ["done","Done"];
+  if(today>=s&&today<=e) return ["now","This week"];
+  if(today>e) return ["behind","Behind"];
+  return ["","Upcoming"];
+};
+function render(){
+  const list=$("list"); list.textContent="";
+  let unitsDone=0, current=null;
+  for(const u of UNITS){
+    const [cls,label]=status(u); if(cls==="done")unitsDone++; if(cls==="now")current=u;
+    const n=u.tasks.filter(([k])=>done[u.id+"."+k]).length;
+    const isOpen = opened? opened.has(u.id) : (cls==="now"||cls==="behind");
+    const sec=document.createElement("section");
+    sec.className="unit"+(cls==="now"?" now":"")+(isOpen?"":" closed");
+    const head=document.createElement("button"); head.className="uhead"; head.type="button"; head.setAttribute("aria-expanded",isOpen);
+    head.innerHTML=`<span class="num">${u.n==="R"?"—":"U"+u.n}</span><span class="ut"><h2></h2><div class="d">${fmt(u.s)} – ${fmt(u.e)} · ${n}/${u.tasks.length}</div><div class="mini"><i style="width:${n/u.tasks.length*100}%"></i></div></span><span class="chip ${cls}">${label}</span>`;
+    head.querySelector("h2").textContent=u.t;
+    head.onclick=()=>{ if(!opened) opened=new Set(UNITS.filter(x=>!document.querySelector(`[data-u="${x.id}"]`)?.classList.contains("closed")).map(x=>x.id));
+      opened.has(u.id)?opened.delete(u.id):opened.add(u.id); render(); };
+    sec.dataset.u=u.id; sec.appendChild(head);
+    const ul=document.createElement("ul"); ul.className="tasks";
+    for(const [k,txt] of u.tasks){
+      const id=u.id+"."+k;
+      const li=document.createElement("li");
+      li.innerHTML=`<label><input type="checkbox" id="t-${id.replace('.','-')}"><span></span></label>`;
+      const cb=li.querySelector("input"); cb.checked=!!done[id];
+      li.querySelector("span").textContent=txt;
+      cb.onchange=()=>{ if(cb.checked) done[id]=true; else delete done[id]; render(); queueSave(); };
+      ul.appendChild(li);
+    }
+    sec.appendChild(ul); list.appendChild(sec);
+  }
+  const c=ALL.filter(id=>done[id]).length;
+  $("pct").textContent=Math.round(c/ALL.length*100)+"%";
+  $("count").textContent=`${c} of ${ALL.length} tasks`;
+  $("units").textContent=`${unitsDone} / ${UNITS.length}`;
+  $("bar").style.width=(c/ALL.length*100)+"%";
+  if(current){ $("nowName").textContent=(current.n==="R"?"":"Unit "+current.n+": ")+current.t; $("nowSub").textContent="Through "+fmt(current.e); }
+  else if(today<new Date(UNITS[0].s+"T00:00")){ $("nowName").textContent="Starts Nov 2"; $("nowSub").textContent="Unit 9: Thermodynamics first"; }
+  else { $("nowName").textContent="Exam month"; $("nowSub").textContent="Keep reviewing"; }
+}
+
+/* Saving: shared db doc, falling back to this browser only */
+let ref=null, timer=null, writing=Promise.resolve();
+function queueSave(){
+  clearTimeout(timer);
+  timer=setTimeout(()=>{
+    const body={done:{...done}, updated:new Date().toISOString()};
+    if(ref){
+      $("save").textContent="Saving…";
+      writing=writing.then(()=>ref.set(body)).then(()=>{$("save").textContent="Saved";})
+        .catch(e=>{$("save").textContent=e&&e.code==="invalid_argument"?"View only: you can't change this tracker":"Couldn't save. Check your connection and tick again.";});
+    } else {
+      try{localStorage.setItem("p2done",JSON.stringify(done));$("save").textContent="Saved in this browser only";}catch(e){$("save").textContent="Couldn't save here";}
+    }
+  },500);
+}
+render();
+(async()=>{
+  const db = window.claude ? await window.claude.use("db") : null;
+  if(!db){
+    try{done=JSON.parse(localStorage.getItem("p2done")||"{}")||{};}catch(e){}
+    $("save").textContent="Saving in this browser only"; render(); return;
+  }
+  ref=db.doc("tracker/progress");
+  ref.onSnapshot(s=>{
+    if(s.metadata.hasPendingWrites) return;
+    const d=s.exists?s.data():null;
+    done = d&&d.done ? {...d.done} : {};
+    $("save").textContent = s.exists ? "Progress synced" : "No progress yet. Tick your first task to start.";
+    render();
+  }, ()=>{$("save").textContent="Lost connection to saved progress. Reload the page.";});
+})();
+</script>
+</body>
+</html>
