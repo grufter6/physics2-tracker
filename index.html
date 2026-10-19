@@ -26,21 +26,28 @@ body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px
 header h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
 header p{margin:6px 0 0;color:var(--muted);max-width:60ch}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.summary{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.summary{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat{min-width:0}
 .stat .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .stat .v{font-family:var(--display);font-weight:700;font-size:24px;font-variant-numeric:tabular-nums}
 .stat .s{font-size:13px;color:var(--muted)}
+.stat.wide{grid-column:1/-1}
 .bar{grid-column:1/-1;height:8px;border-radius:4px;background:var(--accent-soft);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
 .save{grid-column:1/-1;font-family:var(--mono);font-size:12px;color:var(--muted)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:6px}
+nav.tabs a{font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--fg);text-decoration:none}
+nav.tabs a:hover{border-color:var(--accent);color:var(--accent)}
+h2.sec{font-family:var(--display);font-weight:800;font-size:22px;margin:12px 0 0;letter-spacing:-.01em}
+.secnote{color:var(--muted);margin:-12px 0 0;font-size:14px;max-width:62ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
 .unit{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .unit.now{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .uhead{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;cursor:pointer;user-select:none;background:none;border:0;width:100%;text-align:left;color:inherit;font:inherit}
-.uhead:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.uhead:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .num{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:3px;min-width:2.2em}
 .ut{flex:1;min-width:0}
-.ut h2{font-family:var(--display);font-weight:700;font-size:17px;margin:0;line-height:1.25}
+.ut h3{font-family:var(--display);font-weight:700;font-size:17px;margin:0;line-height:1.25}
 .ut .d{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px}
 .mini{height:4px;border-radius:2px;background:var(--line);margin-top:8px;overflow:hidden}
 .mini i{display:block;height:100%;background:var(--accent);width:0}
@@ -48,17 +55,58 @@ header p{margin:6px 0 0;color:var(--muted);max-width:60ch}
 .chip.now{background:var(--accent-soft);color:var(--accent)}
 .chip.done{background:var(--good-soft);color:var(--good)}
 .chip.behind{background:var(--warn-soft);color:var(--warn)}
-.tasks{list-style:none;margin:0;padding:0 16px 14px 16px;display:flex;flex-direction:column;gap:2px}
-.unit.closed .tasks{display:none}
+.ubody{padding:0 16px 16px 16px;display:flex;flex-direction:column;gap:14px}
+.unit.closed .ubody{display:none}
+.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:3px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);text-decoration:none}
+a.tag:hover{text-decoration:underline}
+.eqs{display:flex;flex-wrap:wrap;gap:6px}
+.eqs code{font-family:var(--mono);font-size:12.5px;padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.traps{margin:0;padding-left:18px;font-size:14px}
+.traps li{margin:2px 0}
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .tasks label{display:flex;gap:10px;align-items:flex-start;padding:6px 4px;border-radius:6px;cursor:pointer}
 .tasks label:hover{background:var(--accent-soft)}
-.tasks input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+.tasks input,.mathgrid input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex:none}
 .tasks input:checked + span{color:var(--muted);text-decoration:line-through}
-.tasks a{color:var(--accent)}
+.quiz{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px}
+input[type=number],input[type=text],select{font:14px var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);min-width:0}
+input[type=number]{width:76px;font-family:var(--mono)}
+.qnote{font-size:13px;color:var(--muted)}
+.qnote.good{color:var(--good)} .qnote.warn{color:var(--warn)}
+.mathgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+.mskill{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.mskill h4{margin:0;font-family:var(--display);font-size:15px}
+.mskill p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.mskill .ex{font-family:var(--mono);font-size:12px;color:var(--fg);margin-top:6px;padding:6px 8px;background:var(--bg);border-radius:6px;overflow-x:auto}
+.mskill .where{font-size:12px;color:var(--accent);margin-top:4px}
+.mskill:has(input:checked) h4{color:var(--good)}
+.week{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.day{display:flex;flex-direction:column;gap:4px;padding:10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;min-width:0}
+.day:has(input:checked){background:var(--good-soft);border-color:transparent}
+.day b{font-family:var(--mono);font-size:12px}
+.day span{font-size:12px;color:var(--muted)}
+.day input{accent-color:var(--good)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row input[type=text]{flex:1 1 220px}
+button.btn{font:600 13px var(--body);padding:7px 14px;border-radius:6px;border:0;background:var(--accent);color:var(--bg);cursor:pointer}
+button.x{font:12px var(--mono);border:1px solid var(--line);background:none;color:var(--muted);border-radius:6px;padding:2px 8px;cursor:pointer}
+.errs{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.errs li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+.errs li .m{flex:1;min-width:0;overflow-wrap:anywhere}
+.errs .meta{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.counts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.fmt{width:100%;border-collapse:collapse;font-size:14px}
+.fmt th,.fmt td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.fmt th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.scroll{overflow-x:auto}
+.tips{margin:10px 0 0;padding-left:18px;font-size:14px}
+.tips li{margin:4px 0}
 .res{font-size:13px;color:var(--muted)}
 .res a{color:var(--accent)}
 footer{font-size:13px;color:var(--muted)}
-@media (max-width:520px){.summary{grid-template-columns:1fr 1fr}.stat.wide{grid-column:1/-1}}
+@media (max-width:620px){.summary{grid-template-columns:1fr 1fr}.week{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -66,132 +114,362 @@ footer{font-size:13px;color:var(--muted)}
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">Self-study · Nov 2026 → May 2027 exam</div>
+    <div class="eyebrow">Self-study · Oct 2026 → May 2027 exam</div>
     <h1>AP Physics 2 Tracker</h1>
-    <p>Seven units at about three weeks each, then April for full review. Tick tasks as you finish them; progress saves automatically.</p>
+    <p>A two-week math bootcamp, then seven units at about three weeks each, then April for full review. Tick tasks as you finish them; progress saves automatically.</p>
   </header>
 
   <section class="summary" aria-label="Progress summary">
     <div class="stat"><div class="k">Done</div><div class="v" id="pct">0%</div><div class="s" id="count">0 of 0 tasks</div></div>
-    <div class="stat"><div class="k">Units finished</div><div class="v" id="units">0 / 8</div><div class="s">incl. review</div></div>
+    <div class="stat"><div class="k">Units finished</div><div class="v" id="units">0 / 9</div><div class="s">incl. math + review</div></div>
+    <div class="stat"><div class="k">Days to exam</div><div class="v" id="days">—</div><div class="s">Thu, May 6, 2027</div></div>
+    <div class="stat"><div class="k">Avg quiz</div><div class="v" id="avgq">—</div><div class="s">goal 80%+</div></div>
     <div class="stat wide"><div class="k">This week</div><div class="v" id="nowName" style="font-size:18px;line-height:1.3">—</div><div class="s" id="nowSub"></div></div>
     <div class="bar"><i id="bar"></i></div>
     <div class="save" id="save">Loading saved progress…</div>
   </section>
 
+  <nav class="tabs" aria-label="Sections">
+    <a href="#rhythm">Weekly rhythm</a><a href="#units">Units</a><a href="#math">Math you need</a><a href="#errors">Error log</a><a href="#exam">Exam format</a>
+  </nav>
+
+  <h2 class="sec" id="rhythm">Weekly rhythm</h2>
+  <p class="secnote">About 5–6 hours a week. Tick each session this week. Weeks with 5 or more sessions count toward your streak.</p>
+  <div class="card">
+    <div class="week" id="week"></div>
+    <div class="row" style="margin-top:12px;justify-content:space-between"><span class="qnote" id="weekNote"></span><span class="chip done" id="streak">Streak: 0 weeks</span></div>
+  </div>
+
+  <h2 class="sec" id="units">Units</h2>
+  <p class="secnote">Each unit shows its share of the exam, the math it uses, the equations to know, and the mistakes students make most. Log a quiz score; under 80% means review before moving on.</p>
   <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
 
+  <h2 class="sec" id="math">Math you need</h2>
+  <p class="secnote">AP Physics 2 is algebra-based: no calculus. These are the skills the exam actually leans on. Tick one when you can do its example cold, without notes.</p>
+  <div class="row"><span class="chip done" id="mathCount">0 / 0 ready</span></div>
+  <div class="mathgrid" id="mathgrid"></div>
+
+  <h2 class="sec" id="errors">Error log</h2>
+  <p class="secnote">Write down every mistake and why you made it. Re-read this list twice before the exam. Patterns in the mistake type tell you what to fix.</p>
+  <div class="card">
+    <form id="errForm" class="row">
+      <select id="errUnit" aria-label="Unit"></select>
+      <select id="errType" aria-label="Mistake type"></select>
+      <input type="text" id="errText" placeholder="What went wrong, and the fix" aria-label="What went wrong" required>
+      <button class="btn" type="submit">Add</button>
+    </form>
+    <div class="counts" id="errCounts"></div>
+    <ul class="errs" id="errList"></ul>
+  </div>
+
+  <h2 class="sec" id="exam">Exam format</h2>
+  <div class="card">
+    <div class="scroll">
+      <table class="fmt">
+        <thead><tr><th>Section</th><th>What</th><th>Time</th><th>Weight</th></tr></thead>
+        <tbody>
+          <tr><td>I</td><td>40 multiple-choice questions</td><td>80 min</td><td>50%</td></tr>
+          <tr><td>II</td><td>4 free-response: Mathematical Routines · Translation Between Representations · Experimental Design and Analysis · Qualitative/Quantitative Translation</td><td>100 min</td><td>50%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="tips">
+      <li>You get an equation sheet and can use a calculator on the whole exam. Learn where things are on the sheet so you don't waste time hunting.</li>
+      <li>Write the equation with symbols first, then plug in numbers. Graders give points for the setup even if the arithmetic slips.</li>
+      <li>"Justify" or "explain" means cite a law or equation and connect it to the situation in a full sentence.</li>
+      <li>On Experimental Design, name what you measure, what you change, what you keep constant, and how you'd graph it to get a straight line.</li>
+      <li>Do scaling questions with ratios ("r doubles, so F goes to ¼"), not by plugging in made-up numbers.</li>
+      <li>Check units and size of every answer. A 10<sup>8</sup> m/s ball means something went wrong.</li>
+      <li>Skim all four FRQs first and start with the one you're most sure of.</li>
+    </ul>
+    <p class="res" style="margin:10px 0 0">Format is for the redesigned course (first tested May 2025). Confirm the 2027 date and details on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam" target="_blank" rel="noopener">AP Central</a>.</p>
+  </div>
+
   <footer class="res">
-    Free books: <a href="https://openstax.org/details/books/college-physics-2e" target="_blank" rel="noopener">OpenStax College Physics 2e</a> (chapter numbers below) ·
+    Free books: <a href="https://openstax.org/details/books/college-physics-2e" target="_blank" rel="noopener">OpenStax College Physics 2e</a> (chapter numbers above) ·
     <a href="https://openstax.org/details/books/university-physics-volume-2" target="_blank" rel="noopener">University Physics Vol. 2</a> for extra depth ·
-    Past free-response questions on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam/past-exam-questions" target="_blank" rel="noopener">AP Central</a>. Check College Board for the exact 2027 exam date.
+    Past free-response questions on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam/past-exam-questions" target="_blank" rel="noopener">AP Central</a> ·
+    Videos: <a href="https://www.khanacademy.org/science/ap-physics-2" target="_blank" rel="noopener">Khan Academy</a>, <a href="https://www.flippingphysics.com/ap-physics-2.html" target="_blank" rel="noopener">Flipping Physics</a> ·
+    Concept checks: <a href="https://www.physicsclassroom.com/" target="_blank" rel="noopener">The Physics Classroom</a>.
   </footer>
 </div>
 
 <script>
+const EXAM_DAY=new Date("2027-05-06T08:00");
 const std = (ch)=>[
   ["read",`Read OpenStax College Physics ${ch}`],
   ["sheet","Write a one-page concept + equation sheet"],
   ["probs","Do 20+ end-of-chapter problems and check answers"],
   ["frq","Do 2 past AP FRQs on this unit, grade with the rubric"],
-  ["explain","Explain the big ideas out loud without notes"]
+  ["explain","Explain the big ideas out loud without notes"],
+  ["log","Add every mistake from this unit to the error log"]
+];
+const MATH=[
+  {id:"alg",t:"Solve for any variable",d:"Rearrange an equation before you plug in numbers.",ex:"PV = nRT  →  T = PV / (nR)",w:"Every unit"},
+  {id:"sci",t:"Scientific notation and prefixes",d:"n = 10⁻⁹, μ = 10⁻⁶, m = 10⁻³, k = 10³, M = 10⁶. Use the EE/EXP key.",ex:"450 nm = 4.5 × 10⁻⁷ m",w:"Electricity, optics, modern physics"},
+  {id:"units",t:"Unit conversions",d:"Convert to SI before calculating. Squared units convert squared.",ex:"25 °C = 298 K   ·   1 cm² = 10⁻⁴ m²   ·   1 eV = 1.6 × 10⁻¹⁹ J",w:"Thermo, capacitors, modern physics"},
+  {id:"ratio",t:"Proportional reasoning",d:"The most-tested math skill. Find how one quantity scales when another changes.",ex:"F ∝ 1/r². r × 2  →  F × ¼",w:"Every unit, especially multiple choice"},
+  {id:"trig",t:"Right-triangle trig",d:"SOH-CAH-TOA. Split a vector into x and y parts.",ex:"E = 500 N/C at 30°  →  Ex = 500 cos 30° = 433 N/C",w:"Electric fields, magnetism, optics"},
+  {id:"inv",t:"Inverse trig, degree mode",d:"Find an angle from a ratio. Check your calculator is in DEG.",ex:"sin θ = 0.5  →  θ = sin⁻¹(0.5) = 30°",w:"Snell's law, critical angle"},
+  {id:"vec",t:"Adding vectors",d:"Add x parts, add y parts, then use Pythagoras and tan⁻¹.",ex:"Net E from two charges: Ex,net = E1x + E2x",w:"Unit 10 electric fields, Unit 12 forces"},
+  {id:"graph",t:"Slopes, areas and linearizing",d:"Know what slope and area under a graph mean. Plot y vs 1/x (or x²) to get a straight line.",ex:"Work on a gas = area under the P–V graph",w:"Thermo, Experimental Design FRQ"},
+  {id:"recip",t:"Fractions and reciprocals",d:"Add reciprocals, then flip the answer.",ex:"1/R = 1/6 + 1/3 = 1/2  →  R = 2 Ω",w:"Parallel circuits, lens equation"},
+  {id:"logs",t:"Exponents and logs",d:"log x answers \"10 to what power gives x?\". ln uses base e.",ex:"β = 10 log(I / I₀)   ·   2ˣ = 50  →  x = log 50 / log 2 ≈ 5.6",w:"Decibels, half-life"},
+  {id:"expo",t:"Exponential decay shape",d:"Recognize the curve and use half-lives or time constants.",ex:"N = N₀ (½)^(t / T½)   ·   after 3 half-lives, ⅛ is left",w:"RC circuits, radioactive decay"},
+  {id:"geo",t:"Geometry",d:"Circle and sphere area, similar triangles, angles from a normal line.",ex:"I = P / (4πr²)   ·   A = πr² for flux",w:"Optics ray diagrams, flux, sound intensity"},
+  {id:"sys",t:"Two equations, two unknowns",d:"Substitute or eliminate to solve a pair of equations.",ex:"Kirchhoff loop + junction rules for a two-loop circuit",w:"Unit 11 circuits"},
+  {id:"est",t:"Estimation and sanity checks",d:"Does the size of the answer make sense? Check units at the end.",ex:"A current of 10⁶ A from a 9 V battery is wrong",w:"Every free-response answer"}
 ];
 const UNITS=[
-  {id:"u9", n:"9",  t:"Thermodynamics", s:"2026-11-02", e:"2026-11-22", tasks:std("ch. 13–15")},
-  {id:"u10",n:"10", t:"Electric Force, Field, and Potential", s:"2026-11-23", e:"2026-12-13", tasks:std("ch. 18–19")},
-  {id:"u11",n:"11", t:"Electric Circuits", s:"2026-12-14", e:"2027-01-10", tasks:std("ch. 20–21")},
-  {id:"u12",n:"12", t:"Magnetism and Electromagnetism", s:"2027-01-11", e:"2027-01-31", tasks:std("ch. 22–23")},
-  {id:"u13",n:"13", t:"Geometric Optics", s:"2027-02-01", e:"2027-02-21", tasks:std("ch. 25")},
-  {id:"u14",n:"14", t:"Waves, Sound, and Physical Optics", s:"2027-02-22", e:"2027-03-14", tasks:std("ch. 16–17, 27")},
-  {id:"u15",n:"15", t:"Modern Physics", s:"2027-03-15", e:"2027-04-04", tasks:std("ch. 29–31")},
-  {id:"rev",n:"R",  t:"Review and Practice Exams", s:"2027-04-05", e:"2027-05-02", tasks:[
+  {id:"m",n:"M",t:"Math Bootcamp",s:"2026-10-19",e:"2026-11-01",w:"Used everywhere",
+    math:["alg","sci","units","ratio","trig","logs"],
+    eq:["sin θ = opp/hyp","cos θ = adj/hyp","tan θ = opp/adj","a² + b² = c²","log(ab) = log a + log b","log(aⁿ) = n log a"],
+    traps:["Calculator in radian mode by accident","Typing 3×10^8 as 3×10^8 instead of 3 EE 8, which breaks inside fractions","Forgetting to square the conversion for cm² or mm²"],
+    tasks:[
+      ["solve","Rearrange 10 formulas for a different variable"],
+      ["sci","Do 15 scientific-notation and prefix conversions"],
+      ["trig","Split 10 vectors into components (degree mode!)"],
+      ["ratio","Do 10 \"what happens if this doubles\" scaling questions"],
+      ["logs","Solve 5 log and exponent equations, e.g. 2ˣ = 50"],
+      ["graph","Linearize 3 data sets (plot y vs 1/x or x²) and read the slope"]
+    ]},
+  {id:"u9", n:"9",  t:"Thermodynamics", s:"2026-11-02", e:"2026-11-22", w:"15–18% of exam", tasks:std("ch. 13–15"),
+    math:["alg","units","graph","ratio"],
+    eq:["PV = nRT = NkᵦT","K_avg = (3/2)kᵦT","ΔU = Q + W","W = −PΔV","Q = mcΔT","Q/Δt = kAΔT/L","e = W/Q_H"],
+    traps:["Using °C instead of kelvin in gas laws","AP's W is work done ON the gas, so compression makes W positive","Mixing up isothermal (ΔT = 0) and adiabatic (Q = 0)"]},
+  {id:"u10",n:"10", t:"Electric Force, Field, and Potential", s:"2026-11-23", e:"2026-12-13", w:"15–18% of exam", tasks:std("ch. 18–19"),
+    math:["sci","trig","vec","ratio"],
+    eq:["F = k q₁q₂ / r²","E = F/q","E = kq / r²","V = kq / r","ΔU = qΔV","E = ΔV / d","C = κε₀A / d","Q = CΔV","U_C = ½QΔV"],
+    traps:["Adding field magnitudes instead of components (fields are vectors, potential is not)","Using r instead of r² for force and field","Dropping the sign of a charge when finding potential"]},
+  {id:"u11",n:"11", t:"Electric Circuits", s:"2026-12-14", e:"2027-01-10", w:"15–18% of exam", tasks:std("ch. 20–21"),
+    math:["recip","sys","expo","alg"],
+    eq:["I = ΔQ/Δt","R = ρL/A","ΔV = IR","P = IΔV = I²R","R_series = R₁ + R₂","1/R_par = 1/R₁ + 1/R₂","τ = RC"],
+    traps:["Ammeter goes in series, voltmeter in parallel","Bulb brightness follows power, not current alone","Forgetting a fully charged capacitor carries no current"]},
+  {id:"u12",n:"12", t:"Magnetism and Electromagnetism", s:"2027-01-11", e:"2027-01-31", w:"12–15% of exam", tasks:std("ch. 22–23"),
+    math:["trig","geo","ratio"],
+    eq:["F = qvB sin θ","F = ILB sin θ","B = μ₀I / (2πr)","Φ = BA cos θ","ε = −NΔΦ/Δt","ε = BLv"],
+    traps:["Right-hand rule flips for negative charges","Lenz's law: the induced current opposes the CHANGE in flux, not the flux","Using θ from the wrong reference line in Φ = BA cos θ"]},
+  {id:"u13",n:"13", t:"Geometric Optics", s:"2027-02-01", e:"2027-02-21", w:"12–15% of exam", tasks:std("ch. 25"),
+    math:["trig","inv","recip","geo"],
+    eq:["n = c/v","n₁ sin θ₁ = n₂ sin θ₂","sin θ_c = n₂/n₁","1/f = 1/d₀ + 1/dᵢ","M = hᵢ/h₀ = −dᵢ/d₀","f = R/2"],
+    traps:["Measuring angles from the surface instead of the normal","Diverging lenses and convex mirrors have negative f","A negative image distance means virtual, not wrong"]},
+  {id:"u14",n:"14", t:"Waves, Sound, and Physical Optics", s:"2027-02-22", e:"2027-03-14", w:"12–15% of exam", tasks:std("ch. 16–17, 27"),
+    math:["logs","ratio","geo","trig"],
+    eq:["v = fλ","T = 1/f","λₙ = 2L/n (both ends same)","λₙ = 4L/n, n odd (one end closed)","β = 10 log(I/I₀)","I = P / (4πr²)","d sin θ = mλ"],
+    traps:["Frequency stays the same when a wave enters a new medium; speed and λ change","+10 dB means 10× intensity, not 2×","Thin films: a phase flip only on reflection off a higher-n material"]},
+  {id:"u15",n:"15", t:"Modern Physics", s:"2027-03-15", e:"2027-04-04", w:"12–15% of exam", tasks:std("ch. 29–31"),
+    math:["sci","units","expo","logs"],
+    eq:["E = hf = hc/λ","K_max = hf − φ","λ = h/p","E = mc²","ΔE = E_upper − E_lower","N = N₀(½)^(t/T½)","hc ≈ 1240 eV·nm"],
+    traps:["Mixing eV and joules","Brighter light means more photons, not more energy per photon","Not balancing nucleon number and charge in decay equations"]},
+  {id:"rev",n:"R",  t:"Review and Practice Exams", s:"2027-04-05", e:"2027-05-05", w:"No new material", tasks:[
     ["ex1","Full timed practice exam #1"],
     ["miss","Redo every missed question; log the mistake type"],
-    ["weak","Re-study your two weakest units"],
+    ["weak","Re-study your two weakest units (lowest quiz scores)"],
     ["frqset","Timed FRQ set: one per question type"],
     ["ex2","Full timed practice exam #2"],
-    ["final","Final pass over all concept sheets"]
+    ["sheet","Practice finding things fast on the official equation sheet"],
+    ["errlog","Re-read the whole error log twice"],
+    ["final","Final pass over all concept sheets"],
+    ["reg","Confirm exam registration, room and time with your AP coordinator"]
   ]}
 ];
+const RHYTHM=[["mon","Mon","Read + notes"],["tue","Tue","Problems"],["wed","Wed","Read + notes"],["thu","Thu","Problems"],["sat","Sat","Review + FRQs"],["sun","Sun","Error log"]];
+const ETYPES=["Concept","Math/algebra","Units","Sign/direction","Misread question","Careless"];
 const ALL=UNITS.flatMap(u=>u.tasks.map(([k])=>u.id+"."+k));
-let done={}; let opened=null;
+const MATHBY=Object.fromEntries(MATH.map(m=>[m.id,m]));
+
+let S={done:{},scores:{},math:{},weeks:{},errs:[]}; let opened=null;
 const $=id=>document.getElementById(id);
 const fmt=d=>new Date(d+"T12:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
 const today=new Date(); today.setHours(12,0,0,0);
+const pad=n=>String(n).padStart(2,"0");
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const weekKey=()=>{const d=new Date(today);d.setDate(d.getDate()-((d.getDay()+6)%7));return ymd(d)};
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+
 const status=u=>{
-  const n=u.tasks.filter(([k])=>done[u.id+"."+k]).length, tot=u.tasks.length;
+  const n=u.tasks.filter(([k])=>S.done[u.id+"."+k]).length, tot=u.tasks.length;
   const s=new Date(u.s+"T00:00"), e=new Date(u.e+"T23:59");
   if(n===tot) return ["done","Done"];
   if(today>=s&&today<=e) return ["now","This week"];
   if(today>e) return ["behind","Behind"];
   return ["","Upcoming"];
 };
-function render(){
+
+function renderUnits(){
   const list=$("list"); list.textContent="";
   let unitsDone=0, current=null;
   for(const u of UNITS){
     const [cls,label]=status(u); if(cls==="done")unitsDone++; if(cls==="now")current=u;
-    const n=u.tasks.filter(([k])=>done[u.id+"."+k]).length;
+    const n=u.tasks.filter(([k])=>S.done[u.id+"."+k]).length;
     const isOpen = opened? opened.has(u.id) : (cls==="now"||cls==="behind");
-    const sec=document.createElement("section");
-    sec.className="unit"+(cls==="now"?" now":"")+(isOpen?"":" closed");
-    const head=document.createElement("button"); head.className="uhead"; head.type="button"; head.setAttribute("aria-expanded",isOpen);
-    head.innerHTML=`<span class="num">${u.n==="R"?"—":"U"+u.n}</span><span class="ut"><h2></h2><div class="d">${fmt(u.s)} – ${fmt(u.e)} · ${n}/${u.tasks.length}</div><div class="mini"><i style="width:${n/u.tasks.length*100}%"></i></div></span><span class="chip ${cls}">${label}</span>`;
-    head.querySelector("h2").textContent=u.t;
-    head.onclick=()=>{ if(!opened) opened=new Set(UNITS.filter(x=>!document.querySelector(`[data-u="${x.id}"]`)?.classList.contains("closed")).map(x=>x.id));
-      opened.has(u.id)?opened.delete(u.id):opened.add(u.id); render(); };
-    sec.dataset.u=u.id; sec.appendChild(head);
-    const ul=document.createElement("ul"); ul.className="tasks";
+    const sec=el("section","unit"+(cls==="now"?" now":"")+(isOpen?"":" closed"));
+    sec.dataset.u=u.id;
+    const head=el("button","uhead"); head.type="button"; head.setAttribute("aria-expanded",isOpen);
+    head.innerHTML=`<span class="num">${u.n==="R"?"—":u.n==="M"?"M":"U"+u.n}</span><span class="ut"><h3></h3><div class="d"></div><div class="mini"><i style="width:${n/u.tasks.length*100}%"></i></div></span><span class="chip ${cls}">${label}</span>`;
+    head.querySelector("h3").textContent=u.t;
+    head.querySelector(".d").textContent=`${fmt(u.s)} – ${fmt(u.e)} · ${n}/${u.tasks.length} · ${u.w}`;
+    head.onclick=()=>{ if(!opened) opened=new Set([...document.querySelectorAll(".unit:not(.closed)")].map(x=>x.dataset.u));
+      opened.has(u.id)?opened.delete(u.id):opened.add(u.id); renderUnits(); };
+    sec.appendChild(head);
+
+    const body=el("div","ubody");
+    if(u.math){
+      const box=el("div"); box.appendChild(el("div","lbl","Math you'll use"));
+      const tags=el("div","tags");
+      for(const id of u.math){const a=el("a","tag",MATHBY[id].t);a.href="#m-"+id;tags.appendChild(a)}
+      box.appendChild(tags); body.appendChild(box);
+    }
+    if(u.eq){
+      const box=el("div"); box.appendChild(el("div","lbl","Equations to know"));
+      const eqs=el("div","eqs"); u.eq.forEach(q=>eqs.appendChild(el("code",null,q)));
+      box.appendChild(eqs); body.appendChild(box);
+    }
+    if(u.traps){
+      const box=el("div"); box.appendChild(el("div","lbl","Common mistakes"));
+      const ul=el("ul","traps"); u.traps.forEach(t=>ul.appendChild(el("li",null,t)));
+      box.appendChild(ul); body.appendChild(box);
+    }
+    const tb=el("div"); tb.appendChild(el("div","lbl","Goals"));
+    const ul=el("ul","tasks");
     for(const [k,txt] of u.tasks){
       const id=u.id+"."+k;
-      const li=document.createElement("li");
-      li.innerHTML=`<label><input type="checkbox" id="t-${id.replace('.','-')}"><span></span></label>`;
-      const cb=li.querySelector("input"); cb.checked=!!done[id];
-      li.querySelector("span").textContent=txt;
-      cb.onchange=()=>{ if(cb.checked) done[id]=true; else delete done[id]; render(); queueSave(); };
-      ul.appendChild(li);
+      const li=el("li"); const lab=el("label"); const cb=el("input"); cb.type="checkbox"; cb.id="t-"+u.id+"-"+k;
+      cb.checked=!!S.done[id];
+      cb.onchange=()=>{ if(cb.checked) S.done[id]=true; else delete S.done[id]; renderAll(); queueSave(); };
+      lab.append(cb,el("span",null,txt)); li.appendChild(lab); ul.appendChild(li);
     }
-    sec.appendChild(ul); list.appendChild(sec);
+    tb.appendChild(ul); body.appendChild(tb);
+    if(u.id!=="rev"){
+      const q=el("div","quiz"); const lab=el("label",null,u.id==="m"?"Math check score":"Unit quiz score"); lab.htmlFor="q-"+u.id;
+      const inp=el("input"); inp.type="number"; inp.min=0; inp.max=100; inp.id="q-"+u.id; inp.placeholder="—";
+      if(S.scores[u.id]!=null) inp.value=S.scores[u.id];
+      const note=el("span","qnote");
+      const sc=S.scores[u.id];
+      if(sc!=null){ if(sc>=80){note.className="qnote good";note.textContent="Ready to move on"} else {note.className="qnote warn";note.textContent="Under 80%: review your error log and redo missed problems, then retake"} }
+      inp.onchange=()=>{const v=inp.value.trim(); if(v==="") delete S.scores[u.id]; else S.scores[u.id]=Math.max(0,Math.min(100,Math.round(+v))); renderAll(); queueSave();};
+      q.append(lab,inp,el("span","qnote","%"),note); body.appendChild(q);
+    }
+    sec.appendChild(body); list.appendChild(sec);
   }
-  const c=ALL.filter(id=>done[id]).length;
+  return {unitsDone,current};
+}
+
+function renderMath(){
+  const g=$("mathgrid"); g.textContent="";
+  for(const m of MATH){
+    const lab=el("label","card mskill"); lab.id="m-"+m.id;
+    const cb=el("input"); cb.type="checkbox"; cb.id="mc-"+m.id; cb.checked=!!S.math[m.id];
+    cb.onchange=()=>{ if(cb.checked) S.math[m.id]=true; else delete S.math[m.id]; renderAll(); queueSave(); };
+    const div=el("div"); div.style.minWidth="0";
+    div.append(el("h4",null,m.t),el("p",null,m.d),el("div","ex",m.ex),el("div","where","Shows up in: "+m.w));
+    lab.append(cb,div); g.appendChild(lab);
+  }
+  $("mathCount").textContent=`${MATH.filter(m=>S.math[m.id]).length} / ${MATH.length} ready`;
+}
+
+function renderWeek(){
+  const wk=weekKey(), cur=S.weeks[wk]||{};
+  const w=$("week"); w.textContent="";
+  for(const [k,d,t] of RHYTHM){
+    const lab=el("label","day"); const cb=el("input"); cb.type="checkbox"; cb.id="w-"+k; cb.checked=!!cur[k];
+    cb.onchange=()=>{ S.weeks[wk]=S.weeks[wk]||{}; if(cb.checked) S.weeks[wk][k]=true; else delete S.weeks[wk][k]; renderAll(); queueSave(); };
+    lab.append(cb,el("b",null,d),el("span",null,t)); w.appendChild(lab);
+  }
+  const n=RHYTHM.filter(([k])=>cur[k]).length;
+  $("weekNote").textContent=`${n} of ${RHYTHM.length} sessions this week`;
+  // streak: consecutive weeks (ending this week, or last week if this one isn't there yet) with 5+ sessions
+  let streak=0; const d=new Date(wk+"T12:00");
+  const cnt=k=>Object.keys(S.weeks[k]||{}).length;
+  if(cnt(ymd(d))<5) d.setDate(d.getDate()-7);
+  while(cnt(ymd(d))>=5){streak++; d.setDate(d.getDate()-7);}
+  $("streak").textContent=`Streak: ${streak} week${streak===1?"":"s"}`;
+}
+
+function renderErrs(){
+  const ul=$("errList"); ul.textContent="";
+  const counts={};
+  S.errs.slice().reverse().forEach(e=>{
+    counts[e.type]=(counts[e.type]||0)+1;
+    const li=el("li"); const m=el("div","m");
+    const u=UNITS.find(x=>x.id===e.unit);
+    m.append(el("div",null,e.text),el("div","meta",`${u?(u.n==="M"?"Math":u.n==="R"?"Review":"Unit "+u.n):""} · ${e.type} · ${fmt(e.date)}`));
+    const x=el("button","x","Remove"); x.type="button"; x.setAttribute("aria-label","Remove this mistake");
+    x.onclick=()=>{S.errs=S.errs.filter(z=>z!==e); renderAll(); queueSave();};
+    li.append(m,x); ul.appendChild(li);
+  });
+  if(!S.errs.length) ul.appendChild(el("li","qnote","No mistakes logged yet. Add the first one after your next problem set."));
+  const c=$("errCounts"); c.textContent="";
+  Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([t,n],i)=>c.appendChild(el("span","chip"+(i===0&&n>1?" behind":""),`${t}: ${n}`)));
+}
+
+function renderAll(){
+  const {unitsDone,current}=renderUnits();
+  renderMath(); renderWeek(); renderErrs();
+  const c=ALL.filter(id=>S.done[id]).length;
   $("pct").textContent=Math.round(c/ALL.length*100)+"%";
   $("count").textContent=`${c} of ${ALL.length} tasks`;
   $("units").textContent=`${unitsDone} / ${UNITS.length}`;
   $("bar").style.width=(c/ALL.length*100)+"%";
-  if(current){ $("nowName").textContent=(current.n==="R"?"":"Unit "+current.n+": ")+current.t; $("nowSub").textContent="Through "+fmt(current.e); }
-  else if(today<new Date(UNITS[0].s+"T00:00")){ $("nowName").textContent="Starts Nov 2"; $("nowSub").textContent="Unit 9: Thermodynamics first"; }
-  else { $("nowName").textContent="Exam month"; $("nowSub").textContent="Keep reviewing"; }
+  $("days").textContent=Math.max(0,Math.ceil((EXAM_DAY-today)/864e5));
+  const qs=Object.values(S.scores);
+  $("avgq").textContent=qs.length?Math.round(qs.reduce((a,b)=>a+b,0)/qs.length)+"%":"—";
+  if(current){ $("nowName").textContent=(current.n==="R"||current.n==="M"?"":"Unit "+current.n+": ")+current.t; $("nowSub").textContent="Through "+fmt(current.e); }
+  else if(today<new Date(UNITS[0].s+"T00:00")){ $("nowName").textContent="Math Bootcamp starts Oct 19"; $("nowSub").textContent="Then Unit 9: Thermodynamics on Nov 2"; }
+  else { $("nowName").textContent="Exam time"; $("nowSub").textContent="Good luck!"; }
 }
+
+// error log form
+$("errUnit").append(...UNITS.map(u=>{const o=el("option",null,u.n==="M"?"Math":u.n==="R"?"Review":"Unit "+u.n);o.value=u.id;return o}));
+$("errType").append(...ETYPES.map(t=>el("option",null,t)));
+$("errForm").addEventListener("submit",ev=>{
+  ev.preventDefault();
+  const text=$("errText").value.trim(); if(!text) return;
+  S.errs.push({unit:$("errUnit").value,type:$("errType").value,text,date:ymd(today)});
+  $("errText").value=""; renderAll(); queueSave();
+});
+function syncErrUnit(){const cur=UNITS.find(u=>status(u)[0]==="now");if(cur)$("errUnit").value=cur.id}
 
 /* Saving: shared db doc, falling back to this browser only */
 let ref=null, timer=null, writing=Promise.resolve();
+const LS="p2tracker";
+function normalize(d){
+  return {done:{...(d&&d.done||{})},scores:{...(d&&d.scores||{})},math:{...(d&&d.math||{})},weeks:{...(d&&d.weeks||{})},errs:Array.isArray(d&&d.errs)?d.errs.slice():[]};
+}
 function queueSave(){
   clearTimeout(timer);
   timer=setTimeout(()=>{
-    const body={done:{...done}, updated:new Date().toISOString()};
+    const body={...S, updated:new Date().toISOString()};
     if(ref){
       $("save").textContent="Saving…";
       writing=writing.then(()=>ref.set(body)).then(()=>{$("save").textContent="Saved";})
         .catch(e=>{$("save").textContent=e&&e.code==="invalid_argument"?"View only: you can't change this tracker":"Couldn't save. Check your connection and tick again.";});
     } else {
-      try{localStorage.setItem("p2done",JSON.stringify(done));$("save").textContent="Saved in this browser only";}catch(e){$("save").textContent="Couldn't save here";}
+      try{localStorage.setItem(LS,JSON.stringify(body));$("save").textContent="Saved in this browser only";}catch(e){$("save").textContent="Couldn't save here";}
     }
   },500);
 }
-render();
+function loadLocal(){
+  try{
+    const d=JSON.parse(localStorage.getItem(LS)||"null");
+    if(d) return normalize(d);
+    const old=JSON.parse(localStorage.getItem("p2done")||"null"); // earlier version stored only ticks
+    if(old) return normalize({done:old});
+  }catch(e){}
+  return normalize(null);
+}
+renderAll(); syncErrUnit();
 (async()=>{
   const db = window.claude ? await window.claude.use("db") : null;
   if(!db){
-    try{done=JSON.parse(localStorage.getItem("p2done")||"{}")||{};}catch(e){}
-    $("save").textContent="Saving in this browser only"; render(); return;
+    S=loadLocal(); $("save").textContent="Saving in this browser only"; renderAll(); return;
   }
   ref=db.doc("tracker/progress");
   ref.onSnapshot(s=>{
     if(s.metadata.hasPendingWrites) return;
-    const d=s.exists?s.data():null;
-    done = d&&d.done ? {...d.done} : {};
+    S=normalize(s.exists?s.data():null);
     $("save").textContent = s.exists ? "Progress synced" : "No progress yet. Tick your first task to start.";
-    render();
+    renderAll();
   }, ()=>{$("save").textContent="Lost connection to saved progress. Reload the page.";});
 })();
 </script>
