@@ -108,49 +108,121 @@ button.x{font:12px var(--mono);border:1px solid var(--line);background:none;colo
 footer{font-size:13px;color:var(--muted)}
 @media (max-width:620px){.summary{grid-template-columns:1fr 1fr}.week{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- site chrome ---- */
+.wrap{max-width:960px}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:960px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:18px;color:var(--fg);text-decoration:none;white-space:nowrap}
+.brand .logo{width:30px;height:30px;border-radius:8px;background:var(--accent);color:var(--surface);display:grid;place-items:center;font:700 13px var(--mono)}
+.links{display:flex;gap:2px;margin-left:auto}
+.links a{font:500 14px var(--body);color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px}
+.links a:hover{color:var(--fg);background:var(--accent-soft)}
+.links a[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+.menu{display:none;margin-left:auto;font:600 13px var(--mono);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:8px 12px;cursor:pointer}
+@media (max-width:720px){
+  .menu{display:block}
+  .links{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 16px 12px}
+  .links.open{display:flex}
+  .links a{padding:12px}
+}
+.view[hidden]{display:none!important}
+.view{display:flex;flex-direction:column;gap:20px}
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center;padding-block:28px 8px}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6.5vw,58px);line-height:1.02;margin:8px 0 0;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--muted);font-size:17px;max-width:46ch;margin:14px 0 0}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.cta a{font:600 14px var(--body);text-decoration:none;padding:11px 18px;border-radius:8px}
+.cta .pri{background:var(--accent);color:var(--surface)}
+.cta .sec2{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.cta a:hover{filter:brightness(1.08)}
+.clock{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;text-align:center}
+.clock .big{font-family:var(--display);font-weight:800;font-size:76px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.clock .k{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.clock .s{font-size:14px;color:var(--muted);margin-top:4px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.feat a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;transition:border-color .15s,transform .15s}
+.feat a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.feat b{font-family:var(--display);font-size:16px}
+.feat span{font-size:13.5px;color:var(--muted)}
+.feat .go{font:12px var(--mono);color:var(--accent);margin-top:6px}
+.pagehead{padding-block:24px 0}
+.pagehead h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,40px);margin:6px 0 0;letter-spacing:-.01em}
+.pagehead p{color:var(--muted);margin:8px 0 0;max-width:62ch}
+.sitefoot{border-top:1px solid var(--line);margin-top:24px}
+.sitefoot .in{max-width:960px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:8px}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.clock .big{font-size:60px}}
+@media (prefers-reduced-motion:reduce){.feat a:hover{transform:none}}
 </style>
 </head>
 <body>
 
+<header class="topbar">
+  <div class="in">
+    <a class="brand" href="#home"><span class="logo">P2</span>Physics 2</a>
+    <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="links">Menu</button>
+    <nav class="links" id="links" aria-label="Main">
+      <a href="#home">Home</a><a href="#units">Units</a><a href="#math">Math</a><a href="#log">Error log</a><a href="#exam">Exam</a>
+    </nav>
+  </div>
+</header>
+
 <div class="wrap">
-  <header>
-    <div class="eyebrow">Self-study · Oct 2026 → May 2027 exam</div>
-    <h1>AP Physics 2 Tracker</h1>
-    <p>A two-week math bootcamp, then seven units at about three weeks each, then April for full review. Tick tasks as you finish them; progress saves automatically.</p>
-  </header>
+
+<main class="view" data-view="home">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">AP Physics 2 · self-study · Oct 2026 → May 2027</div>
+      <h1>Score a <em>5</em> on AP Physics 2.</h1>
+      <p>A two-week math bootcamp, seven units at about three weeks each, then April for full review. Tick goals as you go and the site keeps your place.</p>
+      <div class="cta"><a class="pri" href="#units">Go to this week</a><a class="sec2" href="#math">Math you need</a></div>
+    </div>
+    <div class="clock"><div class="big" id="days">—</div><div class="k">days to exam</div><div class="s">Thursday, May 6, 2027</div></div>
+  </section>
 
   <section class="summary" aria-label="Progress summary">
     <div class="stat"><div class="k">Done</div><div class="v" id="pct">0%</div><div class="s" id="count">0 of 0 tasks</div></div>
-    <div class="stat"><div class="k">Units finished</div><div class="v" id="units">0 / 9</div><div class="s">incl. math + review</div></div>
-    <div class="stat"><div class="k">Days to exam</div><div class="v" id="days">—</div><div class="s">Thu, May 6, 2027</div></div>
+    <div class="stat"><div class="k">Units finished</div><div class="v" id="unitsStat">0 / 9</div><div class="s">incl. math + review</div></div>
+    <div class="stat"><div class="k">Math skills</div><div class="v" id="mathStat">0 / 14</div><div class="s">ready</div></div>
     <div class="stat"><div class="k">Avg quiz</div><div class="v" id="avgq">—</div><div class="s">goal 80%+</div></div>
     <div class="stat wide"><div class="k">This week</div><div class="v" id="nowName" style="font-size:18px;line-height:1.3">—</div><div class="s" id="nowSub"></div></div>
     <div class="bar"><i id="bar"></i></div>
     <div class="save" id="save">Loading saved progress…</div>
   </section>
 
-  <nav class="tabs" aria-label="Sections">
-    <a href="#rhythm">Weekly rhythm</a><a href="#units">Units</a><a href="#math">Math you need</a><a href="#errors">Error log</a><a href="#exam">Exam format</a>
-  </nav>
-
-  <h2 class="sec" id="rhythm">Weekly rhythm</h2>
+  <h2 class="sec">Weekly rhythm</h2>
   <p class="secnote">About 5–6 hours a week. Tick each session this week. Weeks with 5 or more sessions count toward your streak.</p>
   <div class="card">
     <div class="week" id="week"></div>
     <div class="row" style="margin-top:12px;justify-content:space-between"><span class="qnote" id="weekNote"></span><span class="chip done" id="streak">Streak: 0 weeks</span></div>
   </div>
 
-  <h2 class="sec" id="units">Units</h2>
-  <p class="secnote">Each unit shows its share of the exam, the math it uses, the equations to know, and the mistakes students make most. Log a quiz score; under 80% means review before moving on.</p>
-  <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
+  <h2 class="sec">Explore</h2>
+  <div class="feat">
+    <a href="#units"><b>Units</b><span>Goals, equations, common mistakes and quiz scores for all 9 units.</span><span class="go">Open units →</span></a>
+    <a href="#math"><b>Math you need</b><span>14 algebra and trig skills the exam uses, with worked examples.</span><span class="go">Open math →</span></a>
+    <a href="#log"><b>Error log</b><span>Record every mistake and see which kind you make most.</span><span class="go">Open log →</span></a>
+    <a href="#exam"><b>Exam format</b><span>How the test is laid out and how to earn free-response points.</span><span class="go">Open exam guide →</span></a>
+  </div>
+</main>
 
-  <h2 class="sec" id="math">Math you need</h2>
-  <p class="secnote">AP Physics 2 is algebra-based: no calculus. These are the skills the exam actually leans on. Tick one when you can do its example cold, without notes.</p>
+<main class="view" data-view="units" hidden>
+  <div class="pagehead"><div class="eyebrow">Study plan</div><h1>Units</h1>
+  <p>Each unit shows its share of the exam, the math it uses, the equations to know, and the mistakes students make most. Log a quiz score; under 80% means review before moving on.</p></div>
+  <div id="list" style="display:flex;flex-direction:column;gap:12px"></div>
+</main>
+
+<main class="view" data-view="math" hidden>
+  <div class="pagehead"><div class="eyebrow">Toolkit</div><h1>Math you need</h1>
+  <p>AP Physics 2 is algebra-based: no calculus. These are the skills the exam actually leans on. Tick one when you can do its example cold, without notes.</p></div>
   <div class="row"><span class="chip done" id="mathCount">0 / 0 ready</span></div>
   <div class="mathgrid" id="mathgrid"></div>
+</main>
 
-  <h2 class="sec" id="errors">Error log</h2>
-  <p class="secnote">Write down every mistake and why you made it. Re-read this list twice before the exam. Patterns in the mistake type tell you what to fix.</p>
+<main class="view" data-view="log" hidden>
+  <div class="pagehead"><div class="eyebrow">Learn from mistakes</div><h1>Error log</h1>
+  <p>Write down every mistake and why you made it. Re-read this list twice before the exam. Patterns in the mistake type tell you what to fix.</p></div>
   <div class="card">
     <form id="errForm" class="row">
       <select id="errUnit" aria-label="Unit"></select>
@@ -161,8 +233,11 @@ footer{font-size:13px;color:var(--muted)}
     <div class="counts" id="errCounts"></div>
     <ul class="errs" id="errList"></ul>
   </div>
+</main>
 
-  <h2 class="sec" id="exam">Exam format</h2>
+<main class="view" data-view="exam" hidden>
+  <div class="pagehead"><div class="eyebrow">Test day</div><h1>Exam format</h1>
+  <p>Know the layout before you walk in, so your time goes to physics.</p></div>
   <div class="card">
     <div class="scroll">
       <table class="fmt">
@@ -184,15 +259,18 @@ footer{font-size:13px;color:var(--muted)}
     </ul>
     <p class="res" style="margin:10px 0 0">Format is for the redesigned course (first tested May 2025). Confirm the 2027 date and details on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam" target="_blank" rel="noopener">AP Central</a>.</p>
   </div>
+</main>
 
-  <footer class="res">
-    Free books: <a href="https://openstax.org/details/books/college-physics-2e" target="_blank" rel="noopener">OpenStax College Physics 2e</a> (chapter numbers above) ·
-    <a href="https://openstax.org/details/books/university-physics-volume-2" target="_blank" rel="noopener">University Physics Vol. 2</a> for extra depth ·
-    Past free-response questions on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam/past-exam-questions" target="_blank" rel="noopener">AP Central</a> ·
-    Videos: <a href="https://www.khanacademy.org/science/ap-physics-2" target="_blank" rel="noopener">Khan Academy</a>, <a href="https://www.flippingphysics.com/ap-physics-2.html" target="_blank" rel="noopener">Flipping Physics</a> ·
-    Concept checks: <a href="https://www.physicsclassroom.com/" target="_blank" rel="noopener">The Physics Classroom</a>.
-  </footer>
 </div>
+
+<footer class="sitefoot res"><div class="in">
+  <div>Free books: <a href="https://openstax.org/details/books/college-physics-2e" target="_blank" rel="noopener">OpenStax College Physics 2e</a> (chapter numbers on the Units page) ·
+  <a href="https://openstax.org/details/books/university-physics-volume-2" target="_blank" rel="noopener">University Physics Vol. 2</a> for extra depth ·
+  Past free-response questions on <a href="https://apcentral.collegeboard.org/courses/ap-physics-2/exam/past-exam-questions" target="_blank" rel="noopener">AP Central</a> ·
+  Videos: <a href="https://www.khanacademy.org/science/ap-physics-2" target="_blank" rel="noopener">Khan Academy</a>, <a href="https://www.flippingphysics.com/ap-physics-2.html" target="_blank" rel="noopener">Flipping Physics</a> ·
+  Concept checks: <a href="https://www.physicsclassroom.com/" target="_blank" rel="noopener">The Physics Classroom</a>.</div>
+  <div>Progress saves in this browser.</div>
+</div></footer>
 
 <script>
 const EXAM_DAY=new Date("2027-05-06T08:00");
@@ -365,7 +443,9 @@ function renderMath(){
     div.append(el("h4",null,m.t),el("p",null,m.d),el("div","ex",m.ex),el("div","where","Shows up in: "+m.w));
     lab.append(cb,div); g.appendChild(lab);
   }
-  $("mathCount").textContent=`${MATH.filter(m=>S.math[m.id]).length} / ${MATH.length} ready`;
+  const mr=MATH.filter(m=>S.math[m.id]).length;
+  $("mathCount").textContent=`${mr} / ${MATH.length} ready`;
+  $("mathStat").textContent=`${mr} / ${MATH.length}`;
 }
 
 function renderWeek(){
@@ -409,7 +489,7 @@ function renderAll(){
   const c=ALL.filter(id=>S.done[id]).length;
   $("pct").textContent=Math.round(c/ALL.length*100)+"%";
   $("count").textContent=`${c} of ${ALL.length} tasks`;
-  $("units").textContent=`${unitsDone} / ${UNITS.length}`;
+  $("unitsStat").textContent=`${unitsDone} / ${UNITS.length}`;
   $("bar").style.width=(c/ALL.length*100)+"%";
   $("days").textContent=Math.max(0,Math.ceil((EXAM_DAY-today)/864e5));
   const qs=Object.values(S.scores);
@@ -458,7 +538,23 @@ function loadLocal(){
   }catch(e){}
   return normalize(null);
 }
-renderAll(); syncErrUnit();
+
+/* Pages: one per hash (#home, #units, #math, #log, #exam); #m-<skill> opens the math page at that skill */
+const PAGES=["home","units","math","log","exam"];
+function route(){
+  const h=location.hash.slice(1)||"home";
+  const page=h.startsWith("m-")?"math":PAGES.includes(h)?h:"home";
+  document.querySelectorAll(".view").forEach(v=>v.hidden=v.dataset.view!==page);
+  document.querySelectorAll(".links a").forEach(a=>{ if(a.getAttribute("href")==="#"+page) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  $("links").classList.remove("open"); $("menuBtn").setAttribute("aria-expanded","false");
+  const t=h.startsWith("m-")&&document.getElementById(h);
+  if(t) t.scrollIntoView({block:"center"}); else window.scrollTo(0,0);
+  const names={home:"AP Physics 2 Tracker",units:"Units",math:"Math you need",log:"Error log",exam:"Exam format"};
+  document.title=page==="home"?names.home:names[page]+" · AP Physics 2 Tracker";
+}
+window.addEventListener("hashchange",route);
+$("menuBtn").onclick=()=>{const o=$("links").classList.toggle("open");$("menuBtn").setAttribute("aria-expanded",o)};
+renderAll(); syncErrUnit(); route();
 (async()=>{
   const db = window.claude ? await window.claude.use("db") : null;
   if(!db){
