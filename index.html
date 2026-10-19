@@ -154,6 +154,32 @@ footer{font-size:13px;color:var(--muted)}
 .sitefoot .in{max-width:960px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:8px}
 @media (max-width:720px){.hero{grid-template-columns:1fr}.clock .big{font-size:60px}}
 @media (prefers-reduced-motion:reduce){.feat a:hover{transform:none}}
+
+/* ---- practice ---- */
+.pgrid{display:grid;grid-template-columns:1fr;gap:16px}
+.pfilters{display:flex;flex-direction:column;gap:12px}
+.pgroup{display:flex;flex-direction:column;gap:6px}
+.pgname{align-self:flex-start;font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:none;border:0;padding:0;cursor:pointer}
+.pgname:hover{color:var(--accent)}
+.pchip{font:13px var(--body);padding:5px 10px;border-radius:99px;border:1px solid var(--line);background:var(--bg);color:var(--muted);cursor:pointer}
+.pchip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.pbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button.ghost{font:600 13px var(--body);padding:7px 12px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+button.ghost:hover{border-color:var(--accent)}
+.pcard{border:1px solid var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.pmeta{font:12px var(--mono);color:var(--accent);letter-spacing:.04em}
+.pq{font-size:18px;line-height:1.5;margin:8px 0 14px;max-width:62ch}
+.pans{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pans input{flex:0 1 200px;font:16px var(--mono)!important}
+.pfb{min-height:1.5em;margin-top:10px;font-size:14px}
+.pfb.good{color:var(--good)} .pfb.warn{color:var(--warn)}
+.psteps{margin:10px 0 0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.psteps .pfinal{font-weight:600;color:var(--good)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ka{display:flex;flex-direction:column;gap:3px;margin-top:8px}
+.ka a{font-size:12.5px;color:var(--accent)}
+.ka .lbl{margin:0}
+.plink{display:inline-block;margin-top:8px;font:600 12px var(--mono);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -163,7 +189,7 @@ footer{font-size:13px;color:var(--muted)}
     <a class="brand" href="#home"><span class="logo">P2</span>Physics 2</a>
     <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="links">Menu</button>
     <nav class="links" id="links" aria-label="Main">
-      <a href="#home">Home</a><a href="#units">Units</a><a href="#math">Math</a><a href="#log">Error log</a><a href="#exam">Exam</a>
+      <a href="#home">Home</a><a href="#units">Units</a><a href="#math">Math</a><a href="#practice">Practice</a><a href="#log">Error log</a><a href="#exam">Exam</a>
     </nav>
   </div>
 </header>
@@ -202,6 +228,7 @@ footer{font-size:13px;color:var(--muted)}
   <div class="feat">
     <a href="#units"><b>Units</b><span>Goals, equations, common mistakes and quiz scores for all 9 units.</span><span class="go">Open units →</span></a>
     <a href="#math"><b>Math you need</b><span>14 algebra and trig skills the exam uses, with worked examples.</span><span class="go">Open math →</span></a>
+    <a href="#practice"><b>Practice</b><span>Unlimited problems for every unit and math skill, with filters and worked solutions.</span><span class="go">Start practicing →</span></a>
     <a href="#log"><b>Error log</b><span>Record every mistake and see which kind you make most.</span><span class="go">Open log →</span></a>
     <a href="#exam"><b>Exam format</b><span>How the test is laid out and how to earn free-response points.</span><span class="go">Open exam guide →</span></a>
   </div>
@@ -218,6 +245,42 @@ footer{font-size:13px;color:var(--muted)}
   <p>AP Physics 2 is algebra-based: no calculus. These are the skills the exam actually leans on. Tick one when you can do its example cold, without notes.</p></div>
   <div class="row"><span class="chip done" id="mathCount">0 / 0 ready</span></div>
   <div class="mathgrid" id="mathgrid"></div>
+</main>
+
+<main class="view" data-view="practice" hidden>
+  <div class="pagehead"><div class="eyebrow">Problem generator</div><h1>Practice</h1>
+  <p>Endless problems with new numbers every time. Pick topics and a difficulty, answer, then check the worked solution. Answers within 2% count, so round sensibly. Type powers of ten as 4.5e-7 or 4.5 x 10^-7.</p></div>
+  <div class="pgrid">
+    <div class="card pfilters">
+      <div class="pbar" style="justify-content:space-between">
+        <span class="lbl" style="margin:0">Topics · <span id="pSel"></span></span>
+        <span class="pbar"><button class="ghost" type="button" id="pAll">All</button><button class="ghost" type="button" id="pNone">None</button></span>
+      </div>
+      <div id="pTopics" class="pfilters"></div>
+      <div class="pbar"><label for="pLevel" class="lbl" style="margin:0">Difficulty</label>
+        <select id="pLevel"><option value="mix">Mixed</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option></select>
+      </div>
+    </div>
+    <div class="card pcard">
+      <div class="pmeta" id="pMeta"></div>
+      <div class="pq" id="pQ"></div>
+      <div class="pans">
+        <input type="text" id="pAns" inputmode="decimal" autocomplete="off" placeholder="Your answer" aria-label="Your answer">
+        <span class="qnote" id="pUnit"></span>
+        <button class="btn" type="button" id="pCheck">Check</button>
+        <button class="ghost" type="button" id="pShow">Show solution</button>
+        <button class="ghost" type="button" id="pNew">Next problem</button>
+      </div>
+      <div class="pfb" id="pFb" aria-live="polite"></div>
+      <button class="ghost" type="button" id="pLog" hidden style="margin-top:8px">Add to error log</button>
+      <ol class="psteps" id="pSteps" hidden></ol>
+    </div>
+    <div class="card">
+      <div class="pbar" style="justify-content:space-between"><span class="lbl" style="margin:0">Your accuracy by topic</span><button class="ghost" type="button" id="pWeak" hidden>Practice my 3 weakest</button></div>
+      <div class="qnote" id="pSession" style="margin:6px 0"></div>
+      <div class="scroll"><table class="fmt"><thead><tr><th>Topic</th><th>Correct</th><th>Accuracy</th></tr></thead><tbody id="pStats"></tbody></table></div>
+    </div>
+  </div>
 </main>
 
 <main class="view" data-view="log" hidden>
@@ -356,7 +419,7 @@ const ETYPES=["Concept","Math/algebra","Units","Sign/direction","Misread questio
 const ALL=UNITS.flatMap(u=>u.tasks.map(([k])=>u.id+"."+k));
 const MATHBY=Object.fromEntries(MATH.map(m=>[m.id,m]));
 
-let S={done:{},scores:{},math:{},weeks:{},errs:[]}; let opened=null;
+let S={done:{},scores:{},math:{},weeks:{},errs:[],prac:{}}; let opened=null;
 const $=id=>document.getElementById(id);
 const fmt=d=>new Date(d+"T12:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
 const today=new Date(); today.setHours(12,0,0,0);
@@ -418,6 +481,7 @@ function renderUnits(){
       lab.append(cb,el("span",null,txt)); li.appendChild(lab); ul.appendChild(li);
     }
     tb.appendChild(ul); body.appendChild(tb);
+    if(UNIT_GROUP[u.id]){const a=el("a","plink",`Practice ${u.id==="m"?"math":"Unit "+u.n} problems →`);a.href="#pu-"+u.id;body.appendChild(a)}
     if(u.id!=="rev"){
       const q=el("div","quiz"); const lab=el("label",null,u.id==="m"?"Math check score":"Unit quiz score"); lab.htmlFor="q-"+u.id;
       const inp=el("input"); inp.type="number"; inp.min=0; inp.max=100; inp.id="q-"+u.id; inp.placeholder="—";
@@ -441,6 +505,8 @@ function renderMath(){
     cb.onchange=()=>{ if(cb.checked) S.math[m.id]=true; else delete S.math[m.id]; renderAll(); queueSave(); };
     const div=el("div"); div.style.minWidth="0";
     div.append(el("h4",null,m.t),el("p",null,m.d),el("div","ex",m.ex),el("div","where","Shows up in: "+m.w));
+    if(KA[m.id]){const ka=el("div","ka");ka.appendChild(el("div","lbl","Khan Academy"));KA[m.id].forEach(([t,u])=>{const a=el("a",null,t+" ↗");a.href=KA_BASE+u;a.target="_blank";a.rel="noopener";ka.appendChild(a)});div.appendChild(ka)}
+    if(MATH_TO_TOPIC[m.id]){const a=el("a","plink","Practice this →");a.href="#p-"+MATH_TO_TOPIC[m.id];div.appendChild(a)}
     lab.append(cb,div); g.appendChild(lab);
   }
   const mr=MATH.filter(m=>S.math[m.id]).length;
@@ -485,7 +551,7 @@ function renderErrs(){
 
 function renderAll(){
   const {unitsDone,current}=renderUnits();
-  renderMath(); renderWeek(); renderErrs();
+  renderMath(); renderWeek(); renderErrs(); if(typeof renderPracStats==="function"&&window.__pracReady) renderPracStats();
   const c=ALL.filter(id=>S.done[id]).length;
   $("pct").textContent=Math.round(c/ALL.length*100)+"%";
   $("count").textContent=`${c} of ${ALL.length} tasks`;
@@ -514,7 +580,7 @@ function syncErrUnit(){const cur=UNITS.find(u=>status(u)[0]==="now");if(cur)$("e
 let ref=null, timer=null, writing=Promise.resolve();
 const LS="p2tracker";
 function normalize(d){
-  return {done:{...(d&&d.done||{})},scores:{...(d&&d.scores||{})},math:{...(d&&d.math||{})},weeks:{...(d&&d.weeks||{})},errs:Array.isArray(d&&d.errs)?d.errs.slice():[]};
+  return {done:{...(d&&d.done||{})},scores:{...(d&&d.scores||{})},math:{...(d&&d.math||{})},weeks:{...(d&&d.weeks||{})},errs:Array.isArray(d&&d.errs)?d.errs.slice():[],prac:{...(d&&d.prac||{})}};
 }
 function queueSave(){
   clearTimeout(timer);
@@ -539,17 +605,291 @@ function loadLocal(){
   return normalize(null);
 }
 
+
+/* ---------- Practice: randomized problem generators ---------- */
+const KA_BASE="https://www.khanacademy.org";
+const KA={
+  trig:[["Trig ratios (practice)","/math/geometry/hs-geo-trig/hs-geo-trig-ratios-intro/e/trigonometry_1"],["Solve for a side (practice)","/math/geometry/hs-geo-trig/hs-geo-solve-for-a-side/e/trigonometry_2"],["Full unit: Right triangles & trig","/math/geometry/hs-geo-trig"]],
+  inv:[["Solve for an angle (practice)","/math/geometry/hs-geo-trig/hs-geo-solve-for-an-angle/e/solve-for-an-angle-in-a-right-triangle"],["Right-triangle word problems","/math/geometry/hs-geo-trig/hs-geo-modeling-with-right-triangles/e/applying-right-triangles"]],
+  vec:[["Components of vectors","/math/precalculus/x9e81a4f98389efdf:vectors/x9e81a4f98389efdf:vector-components/e/components_of_vectors"],["Adding vectors","/math/precalculus/x9e81a4f98389efdf:vectors/x9e81a4f98389efdf:vector-add-sub/e/adding_vectors"],["Magnitude and direction to components","/math/precalculus/x9e81a4f98389efdf:vectors/x9e81a4f98389efdf:component-form/e/converting-from-magnitude-and-direction-form-to-component-form"]],
+  logs:[["Intro to logarithms (practice)","/math/algebra2/x2ec2f6f830c9fb89:logs/x2ec2f6f830c9fb89:log-intro/e/logarithms_1"],["Log properties (practice)","/math/algebra2/x2ec2f6f830c9fb89:logs/x2ec2f6f830c9fb89:log-prop/e/logarithms_2"],["Change of base","/math/algebra2/x2ec2f6f830c9fb89:logs/x2ec2f6f830c9fb89:change-of-base/e/evaluate-logarithms-using-the-change-of-base-rule"],["Full unit: Logarithms","/math/algebra2/x2ec2f6f830c9fb89:logs"]],
+  expo:[["Solve exponential equations with logs","/math/algebra2/x2ec2f6f830c9fb89:logs/x2ec2f6f830c9fb89:exp-eq-log/e/using-logarithms-to-solve-exponential-equations"]]
+};
+const MATH_TO_TOPIC={trig:"m_trig",vec:"m_trig",inv:"m_inv",logs:"m_logs",sci:"m_sci",units:"m_sci",ratio:"m_ratio",recip:"m_recip",expo:"m_expo"};
+
+const R=(a,b,step=1)=>{const n=Math.round((b-a)/step);return +(a+step*Math.floor(Math.random()*(n+1))).toFixed(6)};
+const P=a=>a[Math.floor(Math.random()*a.length)];
+const DEG=Math.PI/180, K=8.99e9, E0=8.85e-12, MU=4*Math.PI*1e-7, QE=1.6e-19;
+const SUP={"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+function nf(x,sig=3){
+  if(x===0) return "0";
+  const a=Math.abs(x);
+  if(a>=0.01&&a<1e5) return String(+x.toPrecision(sig));
+  const e=Math.floor(Math.log10(a)), m=x/Math.pow(10,e);
+  return `${+m.toPrecision(sig)} × 10${String(e).split("").map(c=>SUP[c]).join("")}`;
+}
+function parseNum(s){
+  s=String(s).trim().replace(/−/g,"-").replace(/,/g,"");
+  const m=s.match(/^([-+]?(?:\d+\.?\d*|\.\d+))\s*(?:(?:[x×*]|\s)\s*10\s*\^\s*\(?\s*([-+]?\d+)\s*\)?|e\s*([-+]?\d+))?$/i);
+  if(!m) return NaN;
+  return parseFloat(m[1])*Math.pow(10,+(m[2]??m[3]??0));
+}
+
+// Each generator takes a level (1 easy, 2 medium, 3 hard) and returns {q, a, u, steps}
+const TOPICS=[
+  {id:"m_trig",g:"Math",n:"Vector components",gen(l){
+    const F=R(10,90,5), th=l===1?P([30,45,60]):R(12,78);
+    if(l===3){const a=F*Math.sin(th*DEG);return{q:`A ${F} N force points ${th}° from the vertical (y) axis. What is its horizontal (x) component?`,a,u:"N",steps:[`The angle is measured from the y axis, so the x side is opposite the angle.`,`Fx = F sin θ = ${F} × sin ${th}°`,`Fx = ${nf(a)} N`]}}
+    const ax=P(["x","y"]), a=ax==="x"?F*Math.cos(th*DEG):F*Math.sin(th*DEG);
+    return{q:`A vector of magnitude ${F} N points ${th}° above the +x axis. Find its ${ax} component.`,a,u:"N",steps:[ax==="x"?`Adjacent side: Fx = F cos θ`:`Opposite side: Fy = F sin θ`,`= ${F} × ${ax==="x"?"cos":"sin"} ${th}°`,`= ${nf(a)} N (calculator in degree mode)`]};
+  }},
+  {id:"m_inv",g:"Math",n:"Find an angle",gen(l){
+    if(l===1){const x=R(2,9),y=R(2,9);const a=Math.atan(y/x)/DEG;return{q:`A vector has components x = ${x} and y = ${y}. What angle does it make with the +x axis?`,a,u:"°",steps:[`tan θ = y / x = ${y}/${x}`,`θ = tan⁻¹(${nf(y/x)}) = ${nf(a)}°`]}}
+    if(l===2){const h=R(5,20),o=R(1,h-1);const a=Math.asin(o/h)/DEG;return{q:`A right triangle has hypotenuse ${h} m and the side opposite angle θ is ${o} m. Find θ.`,a,u:"°",steps:[`sin θ = opposite / hypotenuse = ${o}/${h}`,`θ = sin⁻¹(${nf(o/h)}) = ${nf(a)}°`]}}
+    const Ex=R(100,900,50),Ey=R(100,900,50);const mag=Math.hypot(Ex,Ey),a=Math.atan(Ey/Ex)/DEG;
+    return{q:`Two fields add to give Ex = ${Ex} N/C and Ey = ${Ey} N/C. What is the angle of the net field above the +x axis? (magnitude is ${nf(mag)} N/C)`,a,u:"°",steps:[`θ = tan⁻¹(Ey / Ex) = tan⁻¹(${Ey}/${Ex})`,`θ = ${nf(a)}°`]};
+  }},
+  {id:"m_logs",g:"Math",n:"Logarithms",gen(l){
+    if(l===1){const n=R(-6,6);const x=Math.pow(10,n);return{q:`Evaluate log(${nf(x)}).`,a:n,u:"",steps:[`log x asks "10 to what power gives x?"`,`${nf(x)} = 10^${n}, so log = ${n}`]}}
+    if(l===2){const b=P([2,3,5]),y=R(10,200);const a=Math.log10(y)/Math.log10(b);return{q:`Solve ${b}ˣ = ${y} for x.`,a,u:"",steps:[`Take log of both sides: x log ${b} = log ${y}`,`x = log ${y} / log ${b} = ${nf(Math.log10(y))} / ${nf(Math.log10(b))}`,`x = ${nf(a)}`]}}
+    const d=R(3,30);const a=Math.pow(10,d/10);return{q:`A sound gets ${d} dB louder. By what factor does its intensity increase? (β = 10 log(I/I₀))`,a,u:"×",steps:[`Δβ = 10 log(I₂/I₁), so log(I₂/I₁) = ${d}/10 = ${d/10}`,`I₂/I₁ = 10^${d/10} = ${nf(a)}`]};
+  }},
+  {id:"m_sci",g:"Math",n:"Prefixes and unit conversions",gen(l){
+    const pre=[["n",-9],["μ",-6],["m",-3],["k",3],["M",6]];
+    if(l<3){const[p,e]=P(pre),v=l===1?R(1,9):R(10,950,5),base=P(["m","C","F","A","J"]);const a=v*Math.pow(10,e);return{q:`Convert ${v} ${p}${base} to ${base}.`,a,u:base,steps:[`${p} = 10^${e}`,`${v} × 10^${e} = ${nf(a)} ${base}`]}}
+    const v=R(2,90),[from,f]=P([["cm",-2],["mm",-3]]);const a=v*Math.pow(10,2*f);return{q:`A capacitor plate has area ${v} ${from}². Convert to m².`,a,u:"m²",steps:[`1 ${from} = 10^${f} m, so 1 ${from}² = (10^${f})² = 10^${2*f} m²`,`${v} × 10^${2*f} = ${nf(a)} m²`]};
+  }},
+  {id:"m_ratio",g:"Math",n:"Proportional reasoning",gen(l){
+    const opts=[2,3,4,0.5];
+    const r=P(opts),q1=P(opts),q2=P(opts);
+    if(l===1){const a=1/(r*r);return{q:`Two charges exert a force F on each other. If the distance between them is multiplied by ${r}, the new force is what multiple of F?`,a,u:"× F",steps:[`F ∝ 1/r²`,`New F = F / ${r}² = ${nf(a)} F`]}}
+    if(l===2){const a=q1/(r*r);return{q:`One charge is multiplied by ${q1} and the distance is multiplied by ${r}. The new force is what multiple of F?`,a,u:"× F",steps:[`F ∝ q₁q₂ / r²`,`Factor = ${q1} / ${r}² = ${nf(a)}`]}}
+    const a=q1*q2/(r*r);return{q:`Both charges change: q₁ × ${q1}, q₂ × ${q2}, and the distance × ${r}. The new force is what multiple of F?`,a,u:"× F",steps:[`F ∝ q₁q₂ / r²`,`Factor = (${q1} × ${q2}) / ${r}² = ${nf(a)}`]};
+  }},
+  {id:"m_recip",g:"Math",n:"Reciprocals",gen(l){
+    if(l<3){const rs=Array.from({length:l===1?2:3},()=>R(2,30));const a=1/rs.reduce((s,x)=>s+1/x,0);return{q:`Resistors of ${rs.join(" Ω, ")} Ω are in parallel. Find the equivalent resistance.`,a,u:"Ω",steps:[`1/R = ${rs.map(x=>"1/"+x).join(" + ")}`,`1/R = ${nf(1/a)}`,`R = ${nf(a)} Ω (always smaller than the smallest resistor)`]}}
+    const f=R(5,30),d0=f+R(5,40);const a=1/(1/f-1/d0);return{q:`Solve 1/${f} = 1/${d0} + 1/dᵢ for dᵢ.`,a,u:"",steps:[`1/dᵢ = 1/${f} − 1/${d0} = ${nf(1/f-1/d0)}`,`dᵢ = ${nf(a)}`]};
+  }},
+  {id:"m_expo",g:"Math",n:"Exponential decay",gen(l){
+    if(l===1){const n=R(1,5);const a=Math.pow(.5,n);return{q:`What fraction of a sample remains after ${n} half-lives? (decimal)`,a,u:"",steps:[`Each half-life multiplies by ½`,`(½)^${n} = ${nf(a)}`]}}
+    if(l===2){const T=R(2,12),t=R(1,30);const a=Math.pow(.5,t/T);return{q:`Half-life = ${T} days. What fraction remains after ${t} days? (decimal)`,a,u:"",steps:[`N/N₀ = (½)^(t/T½) = (½)^(${t}/${T})`,`= (½)^${nf(t/T)} = ${nf(a)}`]}}
+    const T=R(2,20),f=P([0.3,0.2,0.1,0.05,0.4]);const a=T*Math.log(f)/Math.log(.5);return{q:`Half-life = ${T} years. How long until only ${Math.round(f*100)}% remains?`,a,u:"years",steps:[`${f} = (½)^(t/${T})`,`t/${T} = log(${f}) / log(0.5) = ${nf(Math.log(f)/Math.log(.5))}`,`t = ${nf(a)} years`]};
+  }},
+  {id:"u9_gas",g:"Unit 9",n:"Ideal gas law",gen(l){
+    const n=R(0.5,4,0.5);
+    if(l===1){const P_=R(100,400,10)*1000,V=R(0.01,0.09,0.01);const a=P_*V/(n*8.31);return{q:`${n} mol of gas at P = ${nf(P_)} Pa fills V = ${V} m³. Find the temperature.`,a,u:"K",steps:[`PV = nRT  →  T = PV / (nR)`,`T = (${nf(P_)} × ${V}) / (${n} × 8.31)`,`T = ${nf(a)} K`]}}
+    const Pk=R(100,400,10),VL=R(10,90,5);const T=Pk*1000*VL/1000/(n*8.31);
+    if(l===2) return{q:`${n} mol of gas at ${Pk} kPa fills ${VL} L. Find the temperature in kelvin.`,a:T,u:"K",steps:[`Convert: ${Pk} kPa = ${Pk*1000} Pa, ${VL} L = ${VL/1000} m³`,`T = PV/(nR) = (${Pk*1000} × ${VL/1000}) / (${n} × 8.31)`,`T = ${nf(T)} K`]};
+    return{q:`${n} mol of gas at ${Pk} kPa fills ${VL} L. Find the temperature in °C.`,a:T-273,u:"°C",steps:[`Convert to SI: ${Pk*1000} Pa, ${VL/1000} m³`,`T = PV/(nR) = ${nf(T)} K`,`°C = K − 273 = ${nf(T-273)} °C`]};
+  }},
+  {id:"u9_heat",g:"Unit 9",n:"Heat and specific heat",gen(l){
+    const m=R(0.2,3,0.1),dT=R(5,60),c=4186;
+    if(l===1){const a=m*c*dT;return{q:`How much heat raises ${m} kg of water by ${dT} °C? (c = 4186 J/kg·°C)`,a,u:"J",steps:[`Q = mcΔT = ${m} × 4186 × ${dT}`,`Q = ${nf(a)} J`]}}
+    const Q=Math.round(m*c*dT/100)*100,a=Q/(m*c);
+    if(l===2) return{q:`${nf(Q)} J of heat is added to ${m} kg of water. What is the temperature change? (c = 4186 J/kg·°C)`,a,u:"°C",steps:[`ΔT = Q / (mc) = ${nf(Q)} / (${m} × 4186)`,`ΔT = ${nf(a)} °C`]};
+    const Ti=R(10,30);return{q:`${nf(Q)} J is added to ${m} kg of water starting at ${Ti} °C. What is the final temperature? (c = 4186 J/kg·°C)`,a:Ti+a,u:"°C",steps:[`ΔT = Q/(mc) = ${nf(a)} °C`,`T_f = ${Ti} + ${nf(a)} = ${nf(Ti+a)} °C`]};
+  }},
+  {id:"u9_work",g:"Unit 9",n:"Work on a gas",gen(l){
+    const Pk=R(100,300,10),V1=R(2,8),V2=l===1?V1+R(1,5):P([V1+R(1,5),Math.max(1,V1-R(1,V1-1))]);
+    const dV=(V2-V1)/1000, a=-Pk*1000*dV;
+    return{q:`A gas at constant ${Pk} kPa goes from ${V1} L to ${V2} L. How much work is done ON the gas (AP sign convention)?`,a,u:"J",steps:[`W = −PΔV (work done on the gas)`,`ΔV = ${V2} − ${V1} = ${V2-V1} L = ${nf(dV)} m³`,`W = −(${Pk*1000})(${nf(dV)}) = ${nf(a)} J`,V2>V1?`Negative because the gas expanded and did work on its surroundings.`:`Positive because the gas was compressed.`]};
+  }},
+  {id:"u10_coul",g:"Unit 10",n:"Coulomb's law",gen(l){
+    const q1=R(1,9),q2=R(1,9),r=R(2,50);
+    const [pu,pe,ru,re]=l===3?["nC",-9,"mm",-3]:["μC",-6,"cm",-2];
+    const Q1=q1*Math.pow(10,pe),Q2=q2*Math.pow(10,pe),rr=r*Math.pow(10,re),a=K*Q1*Q2/(rr*rr);
+    return{q:`Two charges of ${q1} ${pu} and ${q2} ${pu} are ${r} ${ru} apart. Find the size of the force between them.`,a,u:"N",steps:[`Convert: ${nf(Q1)} C, ${nf(Q2)} C, ${nf(rr)} m`,`F = kq₁q₂/r² = (8.99 × 10⁹)(${nf(Q1)})(${nf(Q2)}) / (${nf(rr)})²`,`F = ${nf(a)} N`]};
+  }},
+  {id:"u10_field",g:"Unit 10",n:"Electric field",gen(l){
+    if(l<3){const q=R(1,9),r=l===1?R(1,5)/10:R(5,80)/100;const a=K*q*1e-6/(r*r);return{q:`Find the electric field ${nf(r)} m from a ${q} μC point charge.`,a,u:"N/C",steps:[`E = kq/r² = (8.99 × 10⁹)(${q} × 10⁻⁶) / ${nf(r)}²`,`E = ${nf(a)} N/C`]}}
+    const q1=R(2,9),q2=R(1,q1-1),d=R(10,40)/100;const r=d/2;const a=K*(q1-q2)*1e-6/(r*r);
+    return{q:`+${q1} μC and +${q2} μC charges are ${d} m apart. What is the size of the net field at the midpoint?`,a,u:"N/C",steps:[`At the midpoint each charge is r = ${r} m away, and the two fields point in opposite directions.`,`E_net = k(q₁ − q₂)/r² = (8.99 × 10⁹)(${q1-q2} × 10⁻⁶)/${r}²`,`E_net = ${nf(a)} N/C, pointing away from the ${q1} μC charge`]};
+  }},
+  {id:"u10_cap",g:"Unit 10",n:"Capacitors",gen(l){
+    if(l===1){const C=R(1,50),V=R(3,24);const a=C*V;return{q:`A ${C} μF capacitor is connected to ${V} V. How much charge does it store (in μC)?`,a,u:"μC",steps:[`Q = CΔV = ${C} μF × ${V} V`,`Q = ${a} μC`]}}
+    if(l===2){const A=R(1,10)/100,d=R(1,5)/1000;const a=E0*A/d*1e12;return{q:`A parallel-plate capacitor has plates of ${nf(A)} m² separated by ${d*1000} mm (air). Find C in pF.`,a,u:"pF",steps:[`C = ε₀A/d = (8.85 × 10⁻¹²)(${nf(A)}) / ${nf(d)}`,`C = ${nf(a*1e-12)} F = ${nf(a)} pF`]}}
+    const C=R(10,500,10),V=R(5,50);const a=0.5*C*1e-6*V*V*1e3;return{q:`How much energy (in mJ) is stored in a ${C} μF capacitor charged to ${V} V?`,a,u:"mJ",steps:[`U = ½CΔV² = ½(${C} × 10⁻⁶)(${V})²`,`U = ${nf(a/1e3)} J = ${nf(a)} mJ`]};
+  }},
+  {id:"u11_circ",g:"Unit 11",n:"Series and parallel",gen(l){
+    const V=P([6,9,12,24]),r1=R(2,20),r2=R(2,20),r3=R(2,20);
+    if(l===1){const Rt=r1+r2+r3,a=V/Rt;return{q:`${r1} Ω, ${r2} Ω and ${r3} Ω resistors are in series with a ${V} V battery. Find the current.`,a,u:"A",steps:[`Series: R = ${r1} + ${r2} + ${r3} = ${Rt} Ω`,`I = V/R = ${V}/${Rt} = ${nf(a)} A`]}}
+    if(l===2){const Rp=1/(1/r1+1/r2),a=V/Rp;return{q:`${r1} Ω and ${r2} Ω resistors are in parallel across a ${V} V battery. Find the total current from the battery.`,a,u:"A",steps:[`1/R = 1/${r1} + 1/${r2}  →  R = ${nf(Rp)} Ω`,`I = V/R = ${V}/${nf(Rp)} = ${nf(a)} A`]}}
+    const Rp=1/(1/r2+1/r3),Rt=r1+Rp,I=V/Rt,a=I*Rp/r2;return{q:`R₁ = ${r1} Ω is in series with a parallel pair R₂ = ${r2} Ω and R₃ = ${r3} Ω, across ${V} V. Find the current through R₂.`,a,u:"A",steps:[`R₂ ∥ R₃ = ${nf(Rp)} Ω; total R = ${r1} + ${nf(Rp)} = ${nf(Rt)} Ω`,`Total I = ${V}/${nf(Rt)} = ${nf(I)} A`,`V across the pair = I × ${nf(Rp)} = ${nf(I*Rp)} V`,`I₂ = ${nf(I*Rp)}/${r2} = ${nf(a)} A`]};
+  }},
+  {id:"u11_power",g:"Unit 11",n:"Electric power",gen(l){
+    const V=P([3,6,9,12,120]),Rr=R(2,60);
+    if(l===1){const a=V*V/Rr;return{q:`A ${Rr} Ω resistor is connected to ${V} V. What power does it use?`,a,u:"W",steps:[`P = ΔV²/R = ${V}²/${Rr}`,`P = ${nf(a)} W`]}}
+    const I=R(0.5,5,0.5);if(l===2){const a=I*I*Rr;return{q:`${I} A flows through a ${Rr} Ω resistor. What power does it use?`,a,u:"W",steps:[`P = I²R = ${I}² × ${Rr}`,`P = ${nf(a)} W`]}}
+    const Pw=R(20,200,10),t=R(1,8);const a=Pw*t*3600;return{q:`A ${Pw} W bulb runs for ${t} hours. How much energy does it use (in J)?`,a,u:"J",steps:[`E = Pt = ${Pw} W × ${t} × 3600 s`,`E = ${nf(a)} J`]};
+  }},
+  {id:"u12_force",g:"Unit 12",n:"Magnetic force",gen(l){
+    const B=R(0.1,2,0.1);
+    if(l===3){const I=R(1,10),L=R(0.1,1,0.1),th=R(20,90,5);const a=I*L*B*Math.sin(th*DEG);return{q:`A ${L} m wire carrying ${I} A sits in a ${B} T field at ${th}° to the wire. Find the force on it.`,a,u:"N",steps:[`F = ILB sin θ = ${I} × ${L} × ${B} × sin ${th}°`,`F = ${nf(a)} N`]}}
+    const v=R(1,9)*1e5,th=l===1?90:R(20,80,5);const a=QE*v*B*Math.sin(th*DEG);return{q:`A proton moves at ${nf(v)} m/s at ${th}° to a ${B} T magnetic field. Find the magnetic force on it.`,a,u:"N",steps:[`F = qvB sin θ = (1.6 × 10⁻¹⁹)(${nf(v)})(${B}) sin ${th}°`,`F = ${nf(a)} N`]};
+  }},
+  {id:"u12_wire",g:"Unit 12",n:"Field of a wire",gen(l){
+    const I=R(1,30),r=l===1?R(1,10)/100:R(5,50)/1000;const a=MU*I/(2*Math.PI*r)*1e6;
+    return{q:`Find the magnetic field ${nf(r)} m from a long straight wire carrying ${I} A, in μT.`,a,u:"μT",steps:[`B = μ₀I/(2πr) = (4π × 10⁻⁷)(${I}) / (2π × ${nf(r)})`,`B = ${nf(a*1e-6)} T = ${nf(a)} μT`]};
+  }},
+  {id:"u12_emf",g:"Unit 12",n:"Induced emf",gen(l){
+    if(l===1){const B=R(0.1,1.5,0.1),L=R(0.1,1,0.1),v=R(1,10);const a=B*L*v;return{q:`A ${L} m rod slides at ${v} m/s through a ${B} T field (perpendicular). Find the emf.`,a,u:"V",steps:[`ε = BLv = ${B} × ${L} × ${v}`,`ε = ${nf(a)} V`]}}
+    const N=R(10,200,10),A=R(1,20)/100,B1=R(0,0.5,0.1),B2=B1+R(0.1,1,0.1),t=R(0.1,2,0.1);const emf=N*A*(B2-B1)/t;
+    if(l===2) return{q:`A ${N}-turn coil of area ${nf(A)} m² sees the field change from ${B1} T to ${nf(B2)} T in ${t} s. Find the size of the emf.`,a:emf,u:"V",steps:[`ΔΦ = AΔB = ${nf(A)} × ${nf(B2-B1)} = ${nf(A*(B2-B1))} Wb`,`|ε| = NΔΦ/Δt = ${N} × ${nf(A*(B2-B1))} / ${t}`,`|ε| = ${nf(emf)} V`]};
+    const Rr=R(2,20);return{q:`A ${N}-turn coil (area ${nf(A)} m², resistance ${Rr} Ω) sees B change from ${B1} T to ${nf(B2)} T in ${t} s. Find the induced current.`,a:emf/Rr,u:"A",steps:[`|ε| = NAΔB/Δt = ${nf(emf)} V`,`I = ε/R = ${nf(emf)}/${Rr} = ${nf(emf/Rr)} A`]};
+  }},
+  {id:"u13_snell",g:"Unit 13",n:"Snell's law",gen(l){
+    const n1=l===1?1.00:P([1.00,1.33]),n2=P([1.33,1.50,1.52,2.42]),t1=R(15,70,5);
+    if(l===3){const ng=P([1.33,1.50,1.52,2.42]);const a=Math.asin(1/ng)/DEG;return{q:`Find the critical angle for light going from a material with n = ${ng} into air.`,a,u:"°",steps:[`sin θc = n₂/n₁ = 1.00/${ng}`,`θc = sin⁻¹(${nf(1/ng)}) = ${nf(a)}°`]}}
+    const s=n1*Math.sin(t1*DEG)/n2;const a=Math.asin(s)/DEG;return{q:`Light goes from n = ${n1.toFixed(2)} into n = ${n2} at ${t1}° to the normal. Find the refracted angle.`,a,u:"°",steps:[`n₁ sin θ₁ = n₂ sin θ₂`,`sin θ₂ = ${n1.toFixed(2)} × sin ${t1}° / ${n2} = ${nf(s)}`,`θ₂ = ${nf(a)}° (bends toward the normal)`]};
+  }},
+  {id:"u13_lens",g:"Unit 13",n:"Lenses and mirrors",gen(l){
+    if(l===3){const f=-R(5,30),d0=R(5,60);const a=1/(1/f-1/d0);return{q:`An object is ${d0} cm from a diverging lens with f = ${f} cm. Find the image distance.`,a,u:"cm",steps:[`Diverging lens: f is negative`,`1/dᵢ = 1/f − 1/d₀ = 1/(${f}) − 1/${d0}`,`dᵢ = ${nf(a)} cm (negative = virtual, same side as object)`]}}
+    const f=R(5,30),d0=f+R(3,40);const di=1/(1/f-1/d0);
+    if(l===1) return{q:`An object is ${d0} cm from a converging lens with f = ${f} cm. Find the image distance.`,a:di,u:"cm",steps:[`1/f = 1/d₀ + 1/dᵢ`,`1/dᵢ = 1/${f} − 1/${d0} = ${nf(1/di)}`,`dᵢ = ${nf(di)} cm (positive = real image)`]};
+    const h=R(1,10);const a=-di/d0*h;return{q:`A ${h} cm tall object is ${d0} cm from a converging lens with f = ${f} cm. Find the image height (with sign).`,a,u:"cm",steps:[`dᵢ = 1/(1/${f} − 1/${d0}) = ${nf(di)} cm`,`M = −dᵢ/d₀ = ${nf(-di/d0)}`,`hᵢ = M × h₀ = ${nf(a)} cm (negative = inverted)`]};
+  }},
+  {id:"u14_wave",g:"Unit 14",n:"Waves and sound",gen(l){
+    if(l===1){const f=R(2,50),lam=R(0.5,5,0.5);const a=f*lam;return{q:`A wave has frequency ${f} Hz and wavelength ${lam} m. Find its speed.`,a,u:"m/s",steps:[`v = fλ = ${f} × ${lam}`,`v = ${nf(a)} m/s`]}}
+    if(l===2){const f=R(100,2000,10);const a=343/f;return{q:`A ${f} Hz sound travels through air at 343 m/s. Find its wavelength.`,a,u:"m",steps:[`λ = v/f = 343/${f}`,`λ = ${nf(a)} m`]}}
+    const L=R(0.2,1.5,0.1);const a=343/(4*L);return{q:`A pipe ${L} m long is closed at one end. Find its fundamental frequency (v = 343 m/s).`,a,u:"Hz",steps:[`One end closed: λ₁ = 4L = ${nf(4*L)} m`,`f₁ = v/λ₁ = 343/${nf(4*L)} = ${nf(a)} Hz`]};
+  }},
+  {id:"u14_db",g:"Unit 14",n:"Decibels and intensity",gen(l){
+    if(l===1){const e=R(-10,-2);const I=Math.pow(10,e);const a=10*Math.log10(I/1e-12);return{q:`Sound intensity is ${nf(I)} W/m². Find the sound level in dB (I₀ = 10⁻¹² W/m²).`,a,u:"dB",steps:[`β = 10 log(I/I₀) = 10 log(${nf(I)}/10⁻¹²)`,`β = 10 × ${nf(a/10)} = ${nf(a)} dB`]}}
+    if(l===2){const m=R(2,9),e=R(-9,-3);const I=m*Math.pow(10,e);const a=10*Math.log10(I/1e-12);return{q:`Sound intensity is ${nf(I)} W/m². Find the sound level in dB (I₀ = 10⁻¹² W/m²).`,a,u:"dB",steps:[`β = 10 log(I/I₀) = 10 log(${nf(I/1e-12)})`,`β = ${nf(a)} dB`]}}
+    const Pw=R(0.01,1,0.01),r=R(2,50);const I=Pw/(4*Math.PI*r*r),a=10*Math.log10(I/1e-12);return{q:`A ${Pw} W speaker radiates evenly in all directions. What is the sound level ${r} m away?`,a,u:"dB",steps:[`I = P/(4πr²) = ${Pw}/(4π × ${r}²) = ${nf(I)} W/m²`,`β = 10 log(I/10⁻¹²) = ${nf(a)} dB`]};
+  }},
+  {id:"u14_slit",g:"Unit 14",n:"Double slit",gen(l){
+    const lam=R(400,700,10),d=R(0.1,0.5,0.05),L=R(1,4,0.5),m=l===1?1:R(1,4);
+    if(l===3){const y=R(5,40)/1000;const a=y*d*1e-3/(m*L)*1e9;return{q:`Bright fringe m = ${m} appears ${y*1000} mm from the center on a screen ${L} m away; the slits are ${d} mm apart. Find the wavelength in nm.`,a,u:"nm",steps:[`y = mλL/d  →  λ = yd/(mL)`,`λ = (${y})(${nf(d*1e-3)}) / (${m} × ${L})`,`λ = ${nf(a)} nm`]}}
+    const a=m*lam*1e-9*L/(d*1e-3)*1000;return{q:`${lam} nm light hits slits ${d} mm apart; the screen is ${L} m away. How far from the center is bright fringe m = ${m}, in mm?`,a,u:"mm",steps:[`y = mλL/d = ${m} × (${lam} × 10⁻⁹)(${L}) / (${d} × 10⁻³)`,`y = ${nf(a/1000)} m = ${nf(a)} mm`]};
+  }},
+  {id:"u15_photon",g:"Unit 15",n:"Photons and photoelectric effect",gen(l){
+    const lam=l===1?R(150,700,10):R(150,400,10),E=1240/lam;
+    if(l===1) return{q:`Find the energy of a ${lam} nm photon in eV.`,a:E,u:"eV",steps:[`E = hc/λ, with hc ≈ 1240 eV·nm`,`E = 1240/${lam} = ${nf(E)} eV`]};
+    const phi=R(1.8,Math.max(1.9,E-0.3),0.1);
+    if(l===2) return{q:`${lam} nm light hits a metal with work function ${phi} eV. Find the maximum kinetic energy of the ejected electrons.`,a:E-phi,u:"eV",steps:[`Photon energy E = 1240/${lam} = ${nf(E)} eV`,`K_max = E − φ = ${nf(E)} − ${phi} = ${nf(E-phi)} eV`]};
+    const w=R(2,5,0.1);const a=1240/w;return{q:`A metal has work function ${w} eV. What is the longest wavelength that can eject electrons, in nm?`,a,u:"nm",steps:[`Threshold: hf = φ, so λ = hc/φ`,`λ = 1240/${w} = ${nf(a)} nm`]};
+  }},
+  {id:"u15_decay",g:"Unit 15",n:"Radioactive decay",gen(l){
+    const m0=R(20,400,10),T=R(2,30);
+    if(l===1){const n=R(1,5);const a=m0*Math.pow(.5,n);return{q:`A ${m0} g sample has a half-life of ${T} days. How much is left after ${n*T} days?`,a,u:"g",steps:[`${n*T}/${T} = ${n} half-lives`,`m = ${m0} × (½)^${n} = ${nf(a)} g`]}}
+    const t=R(1,80);if(l===2){const a=m0*Math.pow(.5,t/T);return{q:`A ${m0} g sample has a half-life of ${T} hours. How much is left after ${t} hours?`,a,u:"g",steps:[`m = m₀(½)^(t/T½) = ${m0} × (½)^(${t}/${T})`,`m = ${nf(a)} g`]}}
+    const left=R(5,Math.floor(m0*0.8),5);const a=T*Math.log(left/m0)/Math.log(.5);return{q:`A ${m0} g sample decays to ${left} g. The half-life is ${T} years. How much time passed?`,a,u:"years",steps:[`${left}/${m0} = (½)^(t/${T})`,`t = ${T} × log(${nf(left/m0)})/log(0.5)`,`t = ${nf(a)} years`]};
+  }}
+];
+const TOPIC=Object.fromEntries(TOPICS.map(t=>[t.id,t]));
+const GROUPS=[...new Set(TOPICS.map(t=>t.g))];
+const UNIT_GROUP={u9:"Unit 9",u10:"Unit 10",u11:"Unit 11",u12:"Unit 12",u13:"Unit 13",u14:"Unit 14",u15:"Unit 15",m:"Math"};
+
+let PF={topics:new Set(TOPICS.map(t=>t.id)),level:"mix"};
+try{const f=JSON.parse(localStorage.getItem("p2practiceFilter")||"null");if(f){PF.topics=new Set(f.topics.filter(id=>TOPIC[id]));PF.level=f.level||"mix"}}catch(e){}
+const saveFilter=()=>{try{localStorage.setItem("p2practiceFilter",JSON.stringify({topics:[...PF.topics],level:PF.level}))}catch(e){}};
+let cur=null, session={right:0,tries:0,streak:0};
+
+function renderFilters(){
+  const box=$("pTopics"); box.textContent="";
+  for(const g of GROUPS){
+    const grp=el("div","pgroup");
+    const ts=TOPICS.filter(t=>t.g===g), allOn=ts.every(t=>PF.topics.has(t.id));
+    const gl=el("button","pgname",g); gl.type="button"; gl.title="Select or clear this group";
+    gl.setAttribute("aria-pressed",allOn);
+    gl.onclick=()=>{ts.forEach(t=>allOn?PF.topics.delete(t.id):PF.topics.add(t.id));saveFilter();renderFilters()};
+    grp.appendChild(gl);
+    const chips=el("div","tags");
+    for(const t of ts){
+      const st=S.prac[t.id];
+      const b=el("button","pchip"+(PF.topics.has(t.id)?" on":""),t.n); b.type="button"; b.setAttribute("aria-pressed",PF.topics.has(t.id));
+      if(st&&st[1]) b.title=`${st[0]}/${st[1]} correct`;
+      b.onclick=()=>{PF.topics.has(t.id)?PF.topics.delete(t.id):PF.topics.add(t.id);saveFilter();renderFilters()};
+      chips.appendChild(b);
+    }
+    grp.appendChild(chips); box.appendChild(grp);
+  }
+  $("pLevel").value=PF.level;
+  $("pSel").textContent=`${PF.topics.size} of ${TOPICS.length} topics selected`;
+  renderPracStats();
+}
+function newProblem(){
+  const pool=[...PF.topics];
+  if(!pool.length){$("pQ").textContent="Pick at least one topic above.";$("pMeta").textContent="";cur=null;return}
+  const t=TOPIC[P(pool)], lvl=PF.level==="mix"?R(1,3):+PF.level;
+  let p; for(let i=0;i<20;i++){p=t.gen(lvl); if(isFinite(p.a)&&!isNaN(p.a)) break;}
+  cur={...p,t,lvl,checked:false};
+  $("pMeta").textContent=`${t.g} · ${t.n} · ${["","Easy","Medium","Hard"][lvl]}`;
+  $("pQ").textContent=p.q; $("pUnit").textContent=p.u||"";
+  $("pAns").value=""; $("pFb").textContent=""; $("pFb").className="pfb"; $("pSteps").hidden=true; $("pSteps").textContent=""; $("pLog").hidden=true;
+  $("pAns").focus({preventScroll:true});
+}
+function showSteps(){
+  if(!cur) return;
+  const ol=$("pSteps"); ol.textContent="";
+  cur.steps.forEach(s=>ol.appendChild(el("li",null,s)));
+  ol.appendChild(el("li","pfinal",`Answer: ${nf(cur.a)} ${cur.u||""}`));
+  ol.hidden=false;
+}
+function check(){
+  if(!cur) return;
+  const v=parseNum($("pAns").value);
+  if(isNaN(v)){$("pFb").textContent="Enter a number, like 4.5, 4.5e-7 or 4.5 x 10^-7.";$("pFb").className="pfb warn";return}
+  const ok=Math.abs(v-cur.a)<=Math.max(Math.abs(cur.a)*0.02,1e-12);
+  if(!cur.checked){
+    cur.checked=true; session.tries++; const st=S.prac[cur.t.id]||[0,0]; st[1]++;
+    if(ok){session.right++;session.streak++;st[0]++} else session.streak=0;
+    S.prac[cur.t.id]=st; queueSave();
+  }
+  if(ok){$("pFb").textContent=`Correct! ${nf(cur.a)} ${cur.u||""}`;$("pFb").className="pfb good";$("pLog").hidden=true}
+  else{$("pFb").textContent=`Not quite. Check your setup, units and calculator mode, or open the solution.`;$("pFb").className="pfb warn";$("pLog").hidden=false}
+  renderPracStats();
+}
+function renderPracStats(){
+  $("pSession").textContent=`This session: ${session.right}/${session.tries} correct · streak ${session.streak}`;
+  const rows=TOPICS.filter(t=>S.prac[t.id]&&S.prac[t.id][1]).map(t=>({t,r:S.prac[t.id][0],n:S.prac[t.id][1]})).sort((a,b)=>a.r/a.n-b.r/b.n);
+  const tb=$("pStats"); tb.textContent="";
+  if(!rows.length){const tr=el("tr");const td=el("td","qnote","Answer a few problems and your accuracy by topic shows up here, weakest first.");td.colSpan=3;tr.appendChild(td);tb.appendChild(tr);$("pWeak").hidden=true;return}
+  for(const {t,r,n} of rows){
+    const tr=el("tr"); const pct=Math.round(r/n*100);
+    tr.append(el("td",null,`${t.g} · ${t.n}`),el("td","mono",`${r}/${n}`));
+    const td=el("td"); td.appendChild(el("span","chip "+(pct>=80?"done":pct>=50?"":"behind"),pct+"%")); tr.appendChild(td);
+    tb.appendChild(tr);
+  }
+  $("pWeak").hidden=false;
+}
+function practiceWeakest(){
+  const rows=TOPICS.filter(t=>S.prac[t.id]&&S.prac[t.id][1]).sort((a,b)=>S.prac[a.id][0]/S.prac[a.id][1]-S.prac[b.id][0]/S.prac[b.id][1]);
+  if(!rows.length) return;
+  PF.topics=new Set(rows.slice(0,3).map(t=>t.id)); saveFilter(); renderFilters(); newProblem();
+}
+function focusTopics(ids){PF.topics=new Set(ids.filter(id=>TOPIC[id]));saveFilter();renderFilters();newProblem()}
+
+$("pNew").onclick=newProblem; $("pCheck").onclick=check; $("pShow").onclick=showSteps;
+$("pAns").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();cur&&cur.checked&&$("pFb").classList.contains("good")?newProblem():check()}});
+$("pLevel").onchange=()=>{PF.level=$("pLevel").value;saveFilter()};
+$("pAll").onclick=()=>{PF.topics=new Set(TOPICS.map(t=>t.id));saveFilter();renderFilters()};
+$("pNone").onclick=()=>{PF.topics=new Set();saveFilter();renderFilters()};
+$("pWeak").onclick=practiceWeakest;
+$("pLog").onclick=()=>{
+  if(!cur) return;
+  const unit=cur.t.g==="Math"?"m":"u"+cur.t.g.split(" ")[1];
+  S.errs.push({unit,type:"Math/algebra",text:`Practice (${cur.t.n}): ${cur.q} Answer: ${nf(cur.a)} ${cur.u||""}`,date:ymd(today)});
+  queueSave(); renderErrs(); $("pLog").hidden=true; $("pFb").textContent+=" Added to your error log.";
+};
+renderFilters(); newProblem();
+
+window.__pracReady=true;
+
 /* Pages: one per hash (#home, #units, #math, #log, #exam); #m-<skill> opens the math page at that skill */
-const PAGES=["home","units","math","log","exam"];
+const PAGES=["home","units","math","practice","log","exam"];
 function route(){
   const h=location.hash.slice(1)||"home";
-  const page=h.startsWith("m-")?"math":PAGES.includes(h)?h:"home";
+  const page=h.startsWith("m-")?"math":h.startsWith("p-")||h.startsWith("pu-")?"practice":PAGES.includes(h)?h:"home";
+  if(h.startsWith("p-")) focusTopics([h.slice(2)]);
+  if(h.startsWith("pu-")) focusTopics(TOPICS.filter(t=>t.g===UNIT_GROUP[h.slice(3)]).map(t=>t.id));
   document.querySelectorAll(".view").forEach(v=>v.hidden=v.dataset.view!==page);
   document.querySelectorAll(".links a").forEach(a=>{ if(a.getAttribute("href")==="#"+page) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
   $("links").classList.remove("open"); $("menuBtn").setAttribute("aria-expanded","false");
   const t=h.startsWith("m-")&&document.getElementById(h);
   if(t) t.scrollIntoView({block:"center"}); else window.scrollTo(0,0);
-  const names={home:"AP Physics 2 Tracker",units:"Units",math:"Math you need",log:"Error log",exam:"Exam format"};
+  const names={home:"AP Physics 2 Tracker",units:"Units",math:"Math you need",log:"Error log",exam:"Exam format",practice:"Practice"};
   document.title=page==="home"?names.home:names[page]+" · AP Physics 2 Tracker";
 }
 window.addEventListener("hashchange",route);
